@@ -1,0 +1,46 @@
+{
+    "name": "reactjam-fall-2024",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "preci": "rm -rf node_modules",
+        "ci": "bun install --frozen-lockfile",
+        "setup": "npx husky init",
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "lint": "alex",
+        "lint:es-lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "preview": "vite preview",
+        "prepare": "husky"
+    },
+    "dependencies": {
+        "@react-three/drei": "^9.114.0",
+        "@react-three/fiber": "^8.17.8",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "three": "^0.169.0"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.5.0",
+        "@commitlint/config-conventional": "^19.5.0",
+        "@types/bun": "^1.1.10",
+        "@types/react": "^18.3.9",
+        "@types/react-dom": "^18.2.22",
+        "@typescript-eslint/eslint-plugin": "^7.2.0",
+        "@typescript-eslint/parser": "^7.2.0",
+        "@vitejs/plugin-react-swc": "^3.5.0",
+        "alex": "^11.0.1",
+        "eslint": "^8.57.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.6",
+        "husky": "^9.1.6",
+        "lint-staged": "^15.2.10",
+        "prettier": "^3.3.3",
+        "typescript": "^5.2.2",
+        "vite": "^5.2.0"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,scss,css,md}": "prettier --write"
+    }
+}
