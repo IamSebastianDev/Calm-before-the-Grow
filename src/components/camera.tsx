@@ -36,7 +36,7 @@ export const Camera = ({ children }: PropsWithChildren) => {
             <OrbitControls
                 enableZoom={true}
                 zoomSpeed={0.25}
-                maxZoom={1}
+                maxZoom={0.7}
                 minZoom={0.25}
                 enableDamping={true}
                 dampingFactor={100}

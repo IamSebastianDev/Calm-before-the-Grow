@@ -1,24 +1,22 @@
 /** @format */
 
 import { Vector2 } from 'three';
-import { Tile, useGridStore } from './grid.store';
+import { Tile, TileType, useGridStore } from './grid.store';
+import { upgradeActions } from './grid.utils';
 
-/** @format */
-export const addTileToGrid = (tile: Tile) => {
+export const upgradeTile = (tile: Tile, type: TileType) => {
     useGridStore.setState((state) => {
-        const { x, y } = tile.position;
-        // Add the new tile to the state, before reassigning
-        // the map to the state
-        state.tiles.set(`${x}:${y}`, tile);
-        // We also need to set all new surrounding tiles,
-        // that are not yet occupied, and should show a
-        // new selector tile, to add a new tile to
-
-        // Return the updated state
-        return { tiles: new Map(state.tiles) };
+        // To upgrade a tile, we first get the tile upgrade actions,
+        // then execute the actions, and letting each action modify
+        // the state before merging the completed state back into the
+        // store. Each action receives the state as well as the triggering
+        // tile
+        const actions = upgradeActions.getTileUpgradeAction(tile.type, type);
+        return actions.reduce((cur, acc) => acc(cur, tile, type), state);
     });
 };
 
+// Actions that move the grid somewhere
 export const moveGridOffset = (x: number, y: number) => {
     useGridStore.setState((state) => {
         return { offset: new Vector2(state.offset.x + x, state.offset.y + y) };
