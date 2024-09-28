@@ -1,13 +1,11 @@
 /** @format */
 
 import { Vector2 } from 'three';
-import { GridStore, Tile, TileType } from './grid.store';
+import { GridStore, SelectorTile, Tile, TileType } from './grid.store';
 
 export const calculateOffsetAmount = (keys: string[]) => (keys.includes('Shift') ? 0.6 : 0.25);
 
-export const sortTilesByZIndex = (a: Tile, b: Tile) => {
-    return a.position.y < b.position.y ? 1 : -1;
-};
+export const sortTilesByZIndex = (a: Tile, b: Tile) => (a.position.y < b.position.y ? 1 : -1);
 
 // Tile Upgrade Actions. By default, we simply replace the tile, but some
 // tiles have special effects when upgrading (switching types, do something else)
@@ -36,7 +34,7 @@ class UpgradeActions {
             from: ['selector'],
             to: ['dirt_1'],
             action: (state, tile, target) => {
-                state.tiles.get(this.getTileId(tile))!.type = target;
+                state.tiles.set(this.getTileId(tile), new Tile(new Vector2(tile.position.x, tile.position.y), target));
                 const newState = this.addNewSelectorTiles(state, tile);
                 return { ...newState };
             },
@@ -67,13 +65,13 @@ class UpgradeActions {
 
         const [up, down, left, right]: Tile[] = [
             // Up -> add 1 to x, 0.5 to y
-            { position: new Vector2(x + 1, y + 0.5), type: 'selector' },
+            new SelectorTile(new Vector2(x + 1, y + 0.5)),
             // Down -> subtract 1 from x, 0.5 from y
-            { position: new Vector2(x - 1, y - 0.5), type: 'selector' },
+            new SelectorTile(new Vector2(x - 1, y - 0.5)),
             // Left -> Subtract 1 From x, ad 0.5 from y
-            { position: new Vector2(x - 1, y + 0.5), type: 'selector' },
+            new SelectorTile(new Vector2(x - 1, y + 0.5)),
             // Right -> Add 1 to x, subtract 0.5 from y
-            { position: new Vector2(x + 1, y - 0.5), type: 'selector' },
+            new SelectorTile(new Vector2(x + 1, y - 0.5)),
         ];
         // We're only adding the calculated tiles if the ids are not already
         // set. As we're using the serialized position as key, this enables

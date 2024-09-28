@@ -9,5 +9,4 @@ export const assets = {
 };
 
 export type AssetType = keyof typeof assets;
-
 export const { useAssets, AssetProvider } = createAssetProvider(assets);

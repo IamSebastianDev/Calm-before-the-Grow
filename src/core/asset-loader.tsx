@@ -2,7 +2,7 @@
 
 import { useLoader } from '@react-three/fiber';
 import React, { createContext, PropsWithChildren, Suspense, useContext, useMemo } from 'react';
-import { Texture, TextureLoader } from 'three';
+import { NearestFilter, Texture, TextureLoader } from 'three';
 
 export type Assets = Record<PropertyKey, string>;
 export type TextureMap<T extends Assets> = {
@@ -16,6 +16,8 @@ export const createAssetProvider = <T extends Assets>(assets: T) => {
         const textureMap = useMemo(() => {
             return Object.keys(assets).reduce<TextureMap<T>>((acc, cur: keyof T, idx) => {
                 acc[cur] = textures[idx];
+                acc[cur].minFilter = NearestFilter;
+                acc[cur].magFilter = NearestFilter;
                 return acc;
             }, {} as TextureMap<T>);
         }, [textures]);

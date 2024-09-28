@@ -1,7 +1,9 @@
 /** @format */
 
+import { Vector3 } from 'three';
 import { Lights } from '../components/lights';
-import { Sprite } from '../components/sprite';
+
+import { TileRenderer } from '../components/tile-renderer';
 import { useControllerAction } from '../core/controller';
 
 import { Scene, useScene } from '../core/scene-manager';
@@ -37,12 +39,13 @@ export const Main: Scene = () => {
         <>
             <Lights />
             {grid.tiles.map((tile, idx) => (
-                <Sprite
+                <TileRenderer
                     onPointerDown={() => upgradeTile(tile, 'dirt_1')}
-                    key={idx}
-                    texture={assets[tile.type]}
-                    position={[tile.position.x + grid.offset.x, tile.position.y + grid.offset.y, 1]}
-                    scale={1.75}
+                    tile={tile}
+                    key={tile.id}
+                    position={
+                        new Vector3(tile.position.x + grid.offset.x, tile.position.y + grid.offset.y, idx * 0.000001)
+                    }
                 />
             ))}
         </>
