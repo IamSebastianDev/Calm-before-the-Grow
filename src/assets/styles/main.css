@@ -38,6 +38,23 @@
     border-right-color: white;
 }
 
+/* Animations */
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fades-in {
+    opacity: 0; /* Start hidden */
+    animation: fadeIn 2s ease-in forwards; /* 3s animation duration */
+    animation-delay: 2s; /* Start the animation after 2 seconds */
+}
+
 /* Overlays */
 
 .overlay-button-container {

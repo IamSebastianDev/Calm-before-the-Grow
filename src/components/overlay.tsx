@@ -11,7 +11,7 @@ export const Overlay = () => {
 
     return (
         <Html center={true}>
-            <div className="container overlay">
+            <div className="container overlay fades-in">
                 <div className="overlay-button-container">
                     <span>{score.toString().padStart(6, '0')}</span>
                     <button className="overlay-button" onClick={() => sceneManager.next('menu')}>
