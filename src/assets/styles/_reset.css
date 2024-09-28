@@ -1,5 +1,15 @@
 /** @format */
 
+#root {
+    height: 100svh;
+    width: 100svw;
+    overscroll-behavior: none;
+}
+
+* {
+    user-select: none;
+}
+
 html,
 body {
     margin: 0;
@@ -9,12 +19,24 @@ body {
     overscroll-behavior: none;
 }
 
-* {
-    user-select: none;
+body {
+    color: white;
+    font-family: 'Monogram', sans-serif;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
-#root {
-    height: 100svh;
-    width: 100svw;
-    overscroll-behavior: none;
+button {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    outline: none;
+
+    display: grid;
+    place-items: center;
+    color: white;
+    font-family: 'Monogram', sans-serif;
 }

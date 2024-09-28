@@ -6,9 +6,11 @@ import { Lights } from '../components/lights';
 import { TileRenderer } from '../components/tile-renderer';
 import { useControllerAction } from '../core/controller';
 
+import { Overlay } from '../components/overlay';
 import { Scene, useScene } from '../core/scene-manager';
 import { useAssets } from '../providers/asset.provider';
 import { useController } from '../providers/controller.provider';
+import { useGameState } from '../stores/game-state/game-state.store';
 import {
     moveGridOffsetDown,
     moveGridOffsetLeft,
@@ -18,13 +20,12 @@ import {
 } from '../stores/grid/grid.actions';
 import { useOrderedGrid } from '../stores/grid/grid.store';
 import { calculateOffsetAmount } from '../stores/grid/grid.utils';
-import { useGameState } from '../stores/state';
 
 export const Main: Scene = () => {
-    const state = useGameState();
     const sceneManager = useScene();
     const assets = useAssets();
     const grid = useOrderedGrid();
+    const game = useGameState();
 
     // Set up basic controls for panning around
     const controller = useController();
@@ -33,10 +34,11 @@ export const Main: Scene = () => {
     useControllerAction(controller, 'PAN_DOWN', (_, keys) => moveGridOffsetDown(calculateOffsetAmount(keys)));
     useControllerAction(controller, 'PAN_UP', (_, keys) => moveGridOffsetUp(calculateOffsetAmount(keys)));
 
-    console.log({ state, sceneManager, assets, controller, grid });
+    console.log({ game, sceneManager, assets, controller, grid });
 
     return (
         <>
+            <Overlay />
             <Lights />
             {grid.tiles.map((tile, idx) => (
                 <TileRenderer

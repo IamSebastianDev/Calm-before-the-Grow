@@ -7,7 +7,7 @@ import { SceneManager } from './core/scene-manager';
 import { AssetProvider } from './providers/asset.provider';
 import { ControllerProvider } from './providers/controller.provider';
 import { Main } from './scenes/main.scene';
-import { GameStateProvider } from './stores/state';
+import { Menu } from './scenes/menu.scene';
 
 export const App = () => {
     return (
@@ -15,11 +15,10 @@ export const App = () => {
             <Display enableFPS={import.meta.env.DEV}>
                 <AssetLoader loader={Loading}>
                     <AssetProvider>
-                        <GameStateProvider>
-                            <SceneManager>
-                                <Main id="main" />
-                            </SceneManager>
-                        </GameStateProvider>
+                        <SceneManager>
+                            <Menu id="menu" />
+                            <Main id="main" />
+                        </SceneManager>
                     </AssetProvider>
                 </AssetLoader>
             </Display>
