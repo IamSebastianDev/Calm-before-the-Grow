@@ -1,7 +1,8 @@
 /** @format */
 
 import { Vector2 } from 'three';
-import { GridStore, SelectorTile, Tile, TileType } from './grid.store';
+import { GridStore } from './grid.store';
+import { SelectorTile, Tile, TileType } from './grid.tiles';
 
 export const calculateOffsetAmount = (keys: string[]) => (keys.includes('Shift') ? 0.6 : 0.25);
 

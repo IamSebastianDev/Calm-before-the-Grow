@@ -1,7 +1,8 @@
 /** @format */
 
 import { Vector2 } from 'three';
-import { Tile, TileType, useGridStore } from './grid.store';
+import { useGridStore } from './grid.store';
+import { Tile, TileType } from './grid.tiles';
 import { upgradeActions } from './grid.utils';
 
 export const upgradeTile = (tile: Tile, type: TileType) => {

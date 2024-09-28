@@ -1,7 +1,7 @@
 /** @format */
 
 import { SpriteProps } from '@react-three/fiber';
-import { Tile } from '../stores/grid/grid.store';
+import { Tile } from '../stores/grid/grid.tiles';
 import { AnimatedSprite } from './animated-sprite';
 import { StaticSprite } from './static-sprite';
 
