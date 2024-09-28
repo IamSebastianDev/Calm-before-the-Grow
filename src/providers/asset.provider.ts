@@ -4,11 +4,14 @@ import menu from '../assets/sprites/ui/menu.png';
 import selector from '../assets/sprites/ui/selector.png';
 import { createAssetProvider } from '../core/asset-loader';
 
-export const assets = {
+export const tiles = {
     selector,
-    menu,
     dirt_1: tile_001,
 };
 
-export type AssetType = keyof typeof assets;
-export const { useAssets, AssetProvider } = createAssetProvider(assets);
+export const assets = {
+    menu,
+};
+
+export type AssetType = keyof typeof tiles;
+export const { useAssets, AssetProvider } = createAssetProvider({ ...assets, ...tiles });

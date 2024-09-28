@@ -7,6 +7,7 @@ import { TileRenderer } from '../components/tile-renderer';
 import { useControllerAction } from '../core/controller';
 
 import { Overlay } from '../components/overlay';
+import { TileStack } from '../components/tile-stack';
 import { Scene, useScene } from '../core/scene-manager';
 import { useAssets } from '../providers/asset.provider';
 import { useController } from '../providers/controller.provider';
@@ -40,6 +41,7 @@ export const Main: Scene = () => {
         <>
             <Overlay />
             <Lights />
+            <TileStack />
             {grid.tiles.map((tile, idx) => (
                 <TileRenderer
                     onPointerDown={() => upgradeTile(tile, 'dirt_1')}

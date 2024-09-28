@@ -24,7 +24,7 @@ export const moveGridOffset = (x: number, y: number) => {
     });
 };
 
-export const moveGridOffsetLeft = (amount: number = 0.25) => moveGridOffset(-amount, 0);
-export const moveGridOffsetRight = (amount: number = 0.25) => moveGridOffset(amount, 0);
-export const moveGridOffsetUp = (amount: number = 0.25) => moveGridOffset(0, amount);
-export const moveGridOffsetDown = (amount: number = 0.25) => moveGridOffset(0, -amount);
+export const moveGridOffsetLeft = (amount: number = 0.25) => moveGridOffset(amount, 0);
+export const moveGridOffsetRight = (amount: number = 0.25) => moveGridOffset(-amount, 0);
+export const moveGridOffsetUp = (amount: number = 0.25) => moveGridOffset(0, -amount);
+export const moveGridOffsetDown = (amount: number = 0.25) => moveGridOffset(0, amount);
