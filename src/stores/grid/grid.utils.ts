@@ -1,6 +1,7 @@
 /** @format */
 
 import { Vector2 } from 'three';
+import { useGameState } from '../game-state/game-state.store';
 import { GridStore } from './grid.store';
 import { SelectorTile, Tile, TileType } from './grid.tiles';
 
@@ -35,6 +36,7 @@ class UpgradeActions {
             from: ['selector'],
             to: ['dirt_1'],
             action: (state, tile, target) => {
+                useGameState.setState((state) => ({ score: state.score + 2 }));
                 state.tiles.set(this.getTileId(tile), new Tile(new Vector2(tile.position.x, tile.position.y), target));
                 const newState = this.addNewSelectorTiles(state, tile);
                 return { ...newState };
