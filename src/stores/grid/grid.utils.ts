@@ -31,7 +31,6 @@ class UpgradeActions {
 
         // If there are no state machine entries to be found, simply
         // replace the current tile with the new one, swapping them
-        console.log({ stateMachineEntries });
         if (stateMachineEntries.length === 0) {
             return [this.swapTiles];
         }
@@ -42,12 +41,28 @@ class UpgradeActions {
     private actions: Array<UpgradeActionStateMachineEntry> = [
         {
             from: ['selector'],
-            to: ['dirt', 'grass'],
+            to: ['dirt', 'grass', 'soil'],
             action: (state, tile, target) => {
                 this.increaseScore(2);
-                state.tiles.set(this.getTileId(tile), new Tile(new Vector2(tile.position.x, tile.position.y), target));
-                const newState = this.addNewSelectorTiles(state, tile);
-                return { ...newState };
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
+            from: ['selector'],
+            to: ['shallow_water'],
+            action: (state, tile, target) => {
+                this.increaseScore(5);
+                this.grantNewTiles('shallow_water', 'dirt');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
+            from: ['grass'],
+            to: ['soil'],
+            action: (state, tile, target) => {
+                this.increaseScore(2);
+                this.grantNewTiles('dirt', 'dirt');
+                return this.swapTiles(state, tile, target);
             },
         },
         {
@@ -55,17 +70,27 @@ class UpgradeActions {
             to: ['grass'],
             action: (state, tile, target) => {
                 this.increaseScore(4);
-                this.grantNewTiles('dirt', 'dirt');
+                this.grantNewTiles('soil', 'soil', 'dirt', 'dirt');
+                return this.swapTiles(state, tile, target);
+            },
+        },
 
-                return {
-                    ...state,
-                    tiles: new Map(
-                        state.tiles.set(
-                            this.getTileId(tile),
-                            new Tile(new Vector2(tile.position.x, tile.position.y), target),
-                        ),
-                    ),
-                };
+        {
+            from: ['dirt', 'soil'],
+            to: ['shallow_water'],
+            action: (state, tile) => {
+                this.increaseScore(10);
+                this.grantNewTiles('grass', 'grass');
+                return this.swapTiles(state, tile, 'grass');
+            },
+        },
+        // This action is executed whenever a selector tile is upgraded, and new
+        // selector tiles should be generated
+        {
+            from: ['selector'],
+            to: ['dirt', 'grass', 'shallow_water', 'soil'],
+            action: (state, tile) => {
+                return this.addNewSelectorTiles(state, tile);
             },
         },
     ];

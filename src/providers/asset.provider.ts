@@ -1,6 +1,8 @@
 /** @format */
 import tile_001 from '../assets/sprites/tile_001.png';
+import tile_017 from '../assets/sprites/tile_017.png';
 import tile_022 from '../assets/sprites/tile_022.png';
+import tile_104 from '../assets/sprites/tile_104.png';
 import menu from '../assets/sprites/ui/menu.png';
 import outline from '../assets/sprites/ui/outline.png';
 import selector from '../assets/sprites/ui/selector.png';
@@ -9,7 +11,9 @@ import { createAssetProvider } from '../core/asset-loader';
 export const tiles = {
     selector,
     dirt_1: tile_001,
+    soil_1: tile_017,
     grass_1: tile_022,
+    shallow_water_1: tile_104,
 };
 
 export const assets = {

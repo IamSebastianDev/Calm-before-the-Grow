@@ -27,10 +27,12 @@ import { takeTileFromStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
 const sortTilesByProximity =
-    ({ point }: ThreeEvent<PointerEvent>) =>
+    ({ point }: ThreeEvent<PointerEvent>, offset: Vector2) =>
     (a: Tile, b: Tile) => {
         const point2d = new Vector2(point.x, point.y);
-        return a.position.distanceTo(point2d) > b.position.distanceTo(point2d) ? 1 : -1;
+        const aOffset2d = new Vector2(a.position.x + offset.x, a.position.y + offset.y);
+        const bOffset2d = new Vector2(b.position.x + offset.x, b.position.y + offset.y);
+        return aOffset2d.distanceTo(point2d) > bOffset2d.distanceTo(point2d) ? 1 : -1;
     };
 
 export const Main: Scene = () => {
@@ -54,7 +56,7 @@ export const Main: Scene = () => {
         const next = stack.tiles.at(-1);
 
         // On each click, we get the tile closest to the event
-        const [tile] = grid.tiles.sort(sortTilesByProximity(event));
+        const [tile] = grid.tiles.sort(sortTilesByProximity(event, grid.offset));
         // if the distance between closest and event.point is larger then 1, we return early
         if (tile.position.distanceTo(new Vector2(event.point.x, event.point.y)) > 10 || !next) {
             return;

@@ -4,7 +4,7 @@ import { Vector2 } from 'three';
 import { random } from '../../functions/random';
 import { AssetType } from '../../providers/asset.provider';
 
-export const abstractTileTypes = ['selector', 'dirt', 'grass'] as const;
+export const abstractTileTypes = ['selector', 'dirt', 'soil', 'grass', 'shallow_water'] as const;
 export type AbstractTile = (typeof abstractTileTypes)[number];
 
 export type TileType = AssetType;

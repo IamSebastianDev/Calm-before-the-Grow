@@ -8,7 +8,9 @@ import { AbstractTile, TileType } from '../stores/grid/grid.tiles';
 const textureMatcher: Record<AbstractTile, TileType[]> = {
     dirt: ['dirt_1'],
     grass: ['grass_1'],
+    soil: ['soil_1'],
     selector: ['selector'],
+    shallow_water: ['shallow_water_1'],
 };
 
 export const useMatchAbstractToTexture = (abstract: AbstractTile) => {

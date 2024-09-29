@@ -53,7 +53,7 @@ export const TileStack = () => {
     const remaining = 15 - (timer % 15);
 
     useEffect(() => {
-        if (remaining === 0) {
+        if (remaining === 1) {
             addTilesToStack(getRandomAbstractTile());
         }
     }, [remaining]);
