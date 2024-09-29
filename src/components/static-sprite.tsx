@@ -26,7 +26,7 @@ export const StaticSprite = ({ tile, position: finalPosition, ...props }: Static
     });
 
     return (
-        <animated.mesh {...props} position={position as unknown as [x: number, y: number, z: number]} scale={1.75}>
+        <animated.mesh {...props} position={position as unknown as [x: number, y: number, z: number]} scale={1.85}>
             <planeGeometry />
             <meshStandardMaterial transparent map={texture} />
         </animated.mesh>
