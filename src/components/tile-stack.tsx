@@ -4,9 +4,38 @@ import { animated, useSpring } from '@react-spring/three';
 import { Text } from '@react-three/drei';
 import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
-import { Vector3 } from 'three';
+import { Texture, Vector3 } from 'three';
 import { useAssets } from '../providers/asset.provider';
 import { useStackStore } from '../stores/stack/stack.store';
+
+// Child component for rendering each tile with its animation
+type AnimatedTileProps = { idx: number; texture: Texture };
+const AnimatedTile = ({ idx, texture }: AnimatedTileProps) => {
+    const [isHighlighted, setIsHighlighted] = useState(false);
+
+    // Use spring to animate the position of each tile
+    const { position } = useSpring({
+        position: isHighlighted ? [0.15, idx * 0.5, idx] : [0, idx * 0.5, idx],
+        config: { tension: 170, friction: 26 },
+    });
+
+    return (
+        <animated.mesh
+            position={position as unknown as [x: number, y: number, z: number]}
+            onPointerEnter={(event) => {
+                event.stopPropagation();
+                setIsHighlighted(true);
+            }}
+            onPointerLeave={(event) => {
+                event.stopPropagation();
+                setIsHighlighted(false);
+            }}
+        >
+            <planeGeometry />
+            <meshStandardMaterial transparent map={texture} />
+        </animated.mesh>
+    );
+};
 
 export const TileStack = () => {
     const tiles = useStackStore((state) => state.tiles);
@@ -56,25 +85,9 @@ export const TileStack = () => {
 
     return (
         <group ref={ref}>
-            {tiles.map((tile, idx) => {
-                // Use Spring to animate the position
-                const { position } = useSpring({
-                    position: [highlightedIdx === idx ? 0.15 : 0, idx * 0.5, idx],
-                    config: { tension: 250, friction: 25 }, // Adjust the animation timing as needed
-                });
-
-                return (
-                    <animated.mesh
-                        key={idx}
-                        position={position as unknown as [x: number, y: number, z: number]}
-                        onPointerOver={(event) => handlePointerEnter(event, idx)}
-                        onPointerOut={(event) => handlePointerLeave(event)}
-                    >
-                        <planeGeometry />
-                        <meshStandardMaterial transparent map={assets[tile]} />
-                    </animated.mesh>
-                );
-            })}
+            {tiles.map((tile, idx) => (
+                <AnimatedTile key={idx} texture={assets[tile]} idx={idx}></AnimatedTile>
+            ))}
             <group position={new Vector3(0, tiles.length * 0.5 + 0.25, 1)} scale={0.75}>
                 <Text
                     fontSize={0.4}
