@@ -2,10 +2,12 @@
 
 import { animated, useSpring } from '@react-spring/three';
 import { Text } from '@react-three/drei';
-import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useRef, useState } from 'react';
 import { Texture, Vector3 } from 'three';
+import { useClock } from '../hooks/use-clock';
 import { useAssets } from '../providers/asset.provider';
+import { addTilesToStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
 // Child component for rendering each tile with its animation
@@ -44,7 +46,14 @@ export const TileStack = () => {
     const ref = useRef<any>();
     const { camera, size } = useThree();
 
-    const [highlightedIdx, setHighlightedIdx] = useState(-1);
+    const timer = useClock(1);
+    const remaining = 15 - (timer % 15);
+
+    useEffect(() => {
+        if (remaining === 15) {
+            addTilesToStack('dirt_1');
+        }
+    }, [remaining]);
 
     useFrame(() => {
         if ('isOrthographicCamera' in camera && camera.isOrthographicCamera) {
@@ -71,24 +80,30 @@ export const TileStack = () => {
         }
     });
 
-    console.log({ tiles, ref });
-
-    const handlePointerLeave = (event: ThreeEvent<PointerEvent>) => {
-        setHighlightedIdx(-1);
-        event.stopPropagation();
-    };
-
-    const handlePointerEnter = (event: ThreeEvent<PointerEvent>, idx: number) => {
-        setHighlightedIdx(idx);
-        event.stopPropagation();
-    };
-
     return (
         <group ref={ref}>
-            {tiles.map((tile, idx) => (
+            {/* Tiles */}
+            {tiles.slice(-5).map((tile, idx) => (
                 <AnimatedTile key={idx} texture={assets[tile]} idx={idx}></AnimatedTile>
             ))}
-            <group position={new Vector3(0, tiles.length * 0.5 + 0.25, 1)} scale={0.75}>
+            {/* Seconds til next tile */}
+            <group position={new Vector3(1, 0, 1)} scale={0.75}>
+                <Text
+                    fontSize={0.4}
+                    font={'/fonts/monogram.ttf'}
+                    color="white"
+                    textAlign="center"
+                    anchorX="center"
+                    anchorY="middle"
+                >
+                    {remaining}s
+                </Text>
+                <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
+                    <spriteMaterial map={assets.outline} />
+                </sprite>
+            </group>
+            {/* Number of available tiles */}
+            <group position={new Vector3(1, 0.75, 1)} scale={0.75}>
                 <Text
                     fontSize={0.4}
                     font={'/fonts/monogram.ttf'}
