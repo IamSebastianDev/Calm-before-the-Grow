@@ -4,16 +4,19 @@ import { animated, useSpring } from '@react-spring/three';
 import { Text } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
-import { Texture, Vector3 } from 'three';
+import { Vector3 } from 'three';
+import { useMatchAbstractToTexture } from '../hooks/use-abstract-type';
 import { useClock } from '../hooks/use-clock';
 import { useAssets } from '../providers/asset.provider';
+import { AbstractTile } from '../stores/grid/grid.tiles';
 import { addTilesToStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
 // Child component for rendering each tile with its animation
-type AnimatedTileProps = { idx: number; texture: Texture };
-const AnimatedTile = ({ idx, texture }: AnimatedTileProps) => {
+type AnimatedTileProps = { idx: number; type: AbstractTile };
+const AnimatedTile = ({ idx, type }: AnimatedTileProps) => {
     const [isHighlighted, setIsHighlighted] = useState(false);
+    const texture = useMatchAbstractToTexture(type);
 
     // Use spring to animate the position of each tile
     const { position } = useSpring({
@@ -51,7 +54,7 @@ export const TileStack = () => {
 
     useEffect(() => {
         if (remaining === 15) {
-            addTilesToStack('dirt_1');
+            addTilesToStack('dirt');
         }
     }, [remaining]);
 
@@ -84,7 +87,7 @@ export const TileStack = () => {
         <group ref={ref}>
             {/* Tiles */}
             {tiles.slice(-5).map((tile, idx) => (
-                <AnimatedTile key={idx} texture={assets[tile]} idx={idx}></AnimatedTile>
+                <AnimatedTile key={idx} type={tile} idx={idx}></AnimatedTile>
             ))}
             {/* Seconds til next tile */}
             <group position={new Vector3(1, 0, 1)} scale={0.75}>

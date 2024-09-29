@@ -4,7 +4,7 @@ import { Vector2 } from 'three';
 import { useGameState } from '../game-state/game-state.store';
 import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
-import { SelectorTile, Tile, TileType } from './grid.tiles';
+import { AbstractTile, SelectorTile, Tile } from './grid.tiles';
 
 export const calculateOffsetAmount = (keys: string[]) => (keys.includes('Shift') ? 0.6 : 0.25);
 
@@ -16,15 +16,15 @@ export const sortTilesByZIndex = (a: Tile, b: Tile) => (a.position.y < b.positio
 // store and state as we want.
 
 export type UpgradeActionStateMachineEntry = {
-    from: Array<TileType>;
-    to: Array<TileType>;
-    action: (state: GridStore, tile: Tile, target: TileType) => GridStore;
+    from: Array<AbstractTile>;
+    to: Array<AbstractTile>;
+    action: (state: GridStore, tile: Tile, target: AbstractTile) => GridStore;
 };
 
 class UpgradeActions {
     // The primary state machine accessor, returns all matching actions
     // defined in the state machine
-    getTileUpgradeAction(current: TileType, next: TileType) {
+    getTileUpgradeAction(current: AbstractTile, next: AbstractTile) {
         const stateMachineEntries = this.actions.filter(({ from, to }) => {
             return from.includes(current) && to.includes(next);
         });
@@ -35,7 +35,7 @@ class UpgradeActions {
     private actions: Array<UpgradeActionStateMachineEntry> = [
         {
             from: ['selector'],
-            to: ['dirt_1', 'grass_1'],
+            to: ['dirt', 'grass'],
             action: (state, tile, target) => {
                 this.increaseScore(2);
                 state.tiles.set(this.getTileId(tile), new Tile(new Vector2(tile.position.x, tile.position.y), target));
@@ -44,11 +44,11 @@ class UpgradeActions {
             },
         },
         {
-            from: ['dirt_1'],
-            to: ['grass_1'],
+            from: ['dirt'],
+            to: ['grass'],
             action: (state, tile, target) => {
                 this.increaseScore(4);
-                this.grantNewTiles('dirt_1', 'dirt_1');
+                this.grantNewTiles('dirt', 'dirt');
 
                 return {
                     ...state,
@@ -63,7 +63,7 @@ class UpgradeActions {
         },
     ];
 
-    private grantNewTiles(...tiles: TileType[]) {
+    private grantNewTiles(...tiles: AbstractTile[]) {
         addTilesToStack(...tiles);
     }
 

@@ -1,6 +1,6 @@
 /** @format */
 
-import { TileType } from '../grid/grid.tiles';
+import { AbstractTile } from '../grid/grid.tiles';
 import { useStackStore } from './stack.store';
 
 export const takeTileFromStack = () => {
@@ -9,7 +9,7 @@ export const takeTileFromStack = () => {
     });
 };
 
-export const addTilesToStack = (...tiles: TileType[]) => {
+export const addTilesToStack = (...tiles: AbstractTile[]) => {
     useStackStore.setState((state) => {
         return { tiles: [...tiles, ...state.tiles] };
     });

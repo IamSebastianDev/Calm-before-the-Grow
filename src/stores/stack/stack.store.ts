@@ -1,10 +1,10 @@
 /** @format */
 
 import { create } from 'zustand';
-import { TileType } from '../grid/grid.tiles';
+import { AbstractTile } from '../grid/grid.tiles';
 
 export type Stack = {
-    tiles: TileType[];
+    tiles: AbstractTile[];
 };
 
-export const useStackStore = create<Stack>()(() => ({ tiles: ['dirt_1'] }));
+export const useStackStore = create<Stack>()(() => ({ tiles: [] }));

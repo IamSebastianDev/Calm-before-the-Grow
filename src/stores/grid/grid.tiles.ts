@@ -3,6 +3,9 @@
 import { Vector2 } from 'three';
 import { AssetType } from '../../providers/asset.provider';
 
+export const abstractTileTypes = ['selector', 'dirt', 'grass'] as const;
+export type AbstractTile = (typeof abstractTileTypes)[number];
+
 export type TileType = AssetType;
 
 export type AnimatedTile = Tile & {
@@ -17,7 +20,7 @@ export class Tile {
 
     constructor(
         protected _position: Vector2,
-        public type: TileType,
+        public type: AbstractTile,
     ) {}
 
     get position() {

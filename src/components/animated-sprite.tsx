@@ -1,16 +1,15 @@
 /** @format */
 
 import { MeshProps } from '@react-three/fiber';
+import { useMatchAbstractToTexture } from '../hooks/use-abstract-type';
 import { useClock } from '../hooks/use-clock';
-import { useAssets } from '../providers/asset.provider';
 import { AnimatedTile } from '../stores/grid/grid.tiles';
 
 export type AnimatedSpriteProps = MeshProps & {
     tile: AnimatedTile;
 };
 export const AnimatedSprite = ({ tile, ...props }: AnimatedSpriteProps) => {
-    const assets = useAssets();
-    const texture = assets[tile.type];
+    const texture = useMatchAbstractToTexture(tile.type);
     const clock = useClock(tile.frames);
 
     texture.repeat.set(1 / tile.columns, 1 / tile.rows);
