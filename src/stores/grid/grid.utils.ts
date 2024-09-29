@@ -34,7 +34,7 @@ class UpgradeActions {
     private actions: Array<UpgradeActionStateMachineEntry> = [
         {
             from: ['selector'],
-            to: ['dirt_1'],
+            to: ['dirt_1', 'grass_1'],
             action: (state, tile, target) => {
                 useGameState.setState((state) => ({ score: state.score + 2 }));
                 state.tiles.set(this.getTileId(tile), new Tile(new Vector2(tile.position.x, tile.position.y), target));

@@ -20,13 +20,17 @@ import {
     upgradeTile,
 } from '../stores/grid/grid.actions';
 import { useOrderedGrid } from '../stores/grid/grid.store';
+import { Tile } from '../stores/grid/grid.tiles';
 import { calculateOffsetAmount } from '../stores/grid/grid.utils';
+import { takeTileFromStack } from '../stores/stack/stack.actions';
+import { useStackStore } from '../stores/stack/stack.store';
 
 export const Main: Scene = () => {
     const sceneManager = useScene();
     const assets = useAssets();
     const grid = useOrderedGrid();
     const game = useGameState();
+    const stack = useStackStore();
 
     // Set up basic controls for panning around
     const controller = useController();
@@ -37,6 +41,13 @@ export const Main: Scene = () => {
 
     console.log({ game, sceneManager, assets, controller, grid });
 
+    const handleTileClicked = (tile: Tile) => {
+        const next = stack.tiles.at(-1)!;
+        console.log({ tile, next });
+        upgradeTile(tile, next);
+        takeTileFromStack();
+    };
+
     return (
         <>
             <Overlay />
@@ -44,7 +55,7 @@ export const Main: Scene = () => {
             <TileStack />
             {grid.tiles.map((tile, idx) => (
                 <TileRenderer
-                    onPointerDown={() => upgradeTile(tile, 'dirt_1')}
+                    onPointerDown={() => handleTileClicked(tile)}
                     tile={tile}
                     key={tile.id}
                     position={
