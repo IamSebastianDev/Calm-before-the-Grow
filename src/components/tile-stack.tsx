@@ -43,9 +43,10 @@ export const TileStack = () => {
     return (
         <group ref={ref}>
             {tiles.map((tile, idx) => (
-                <sprite key={idx} position={new Vector3(idx * 0.5, 0, idx)}>
-                    <spriteMaterial transparent map={assets[tile]} />
-                </sprite>
+                <mesh key={idx} position={new Vector3(0, idx * 0.5, idx)}>
+                    <planeGeometry />
+                    <meshStandardMaterial transparent map={assets[tile]} />
+                </mesh>
             ))}
         </group>
     );

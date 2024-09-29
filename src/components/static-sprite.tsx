@@ -1,10 +1,10 @@
 /** @format */
 
-import { SpriteProps } from '@react-three/fiber';
+import { MeshProps } from '@react-three/fiber';
 import { useAssets } from '../providers/asset.provider';
 import { Tile } from '../stores/grid/grid.tiles';
 
-export type StaticSpriteProps = SpriteProps & {
+export type StaticSpriteProps = MeshProps & {
     tile: Tile;
 };
 
@@ -14,8 +14,9 @@ export const StaticSprite = ({ tile, ...props }: StaticSpriteProps) => {
     const texture = assets[tile.type];
 
     return (
-        <sprite {...props} scale={1.75}>
-            <spriteMaterial transparent map={texture} />
-        </sprite>
+        <mesh {...props} scale={1.75}>
+            <planeGeometry />
+            <meshStandardMaterial transparent map={texture} />
+        </mesh>
     );
 };
