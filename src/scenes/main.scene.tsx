@@ -7,7 +7,6 @@ import { TileRenderer } from '../components/tile-renderer';
 import { useControllerAction } from '../core/controller';
 
 import { ThreeEvent } from '@react-three/fiber';
-import { MobileController } from '../components/mobile-controller';
 import { Overlay } from '../components/overlay';
 import { TileStack } from '../components/tile-stack';
 import { Scene, useScene } from '../core/scene-manager';
@@ -73,7 +72,6 @@ export const Main: Scene = () => {
         <>
             <Overlay />
             <Lights />
-            {device.isMobile && <MobileController />}
             <TileStack />
             <group onPointerDown={(ev) => handleTileClicked(ev)}>
                 {grid.tiles.map((tile, idx) => (

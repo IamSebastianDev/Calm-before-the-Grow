@@ -85,6 +85,8 @@
     position: fixed;
     inset: 0;
     background-color: black;
+    z-index: 1000;
+    pointer-events: none;
 }
 
 /* Main Menu */
@@ -108,12 +110,11 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    position: fixed;
+    position: absolute;
     right: 0;
     bottom: 0;
     margin: 1rem;
     transform-origin: bottom right;
-    filter: brightness(0.7);
 }
 
 .mobile-controller img {
@@ -140,4 +141,31 @@
     grid-column: 1;
     grid-row: 2;
     rotate: -90deg;
+}
+
+.landscape-hint {
+    width: 100svw;
+    border-top: 2px double white;
+    border-bottom: 2px double white;
+    position: absolute;
+    inset-block: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 128px;
+    translate: 0px -128px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+}
+
+.landscape-hint img {
+    width: 96px;
+    height: 96px;
+    image-rendering: pixelated;
+}
+
+.landscape-hint.hidden {
+    opacity: 0;
+    transition: opacity 1s ease-out;
 }

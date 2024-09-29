@@ -1,16 +1,23 @@
 /** @format */
+// Dirt
 import tile_001 from '../assets/sprites/tile_001.png';
 import tile_002 from '../assets/sprites/tile_002.png';
+// Soil
 import tile_017 from '../assets/sprites/tile_017.png';
+// Grass
 import tile_022 from '../assets/sprites/tile_022.png';
 import tile_023 from '../assets/sprites/tile_023.png';
 import tile_024 from '../assets/sprites/tile_024.png';
+// Rocks
 import tile_061 from '../assets/sprites/tile_061.png';
-import tile_064 from '../assets/sprites/tile_064.png';
+import tile_063 from '../assets/sprites/tile_063.png';
+// Water
 import tile_104 from '../assets/sprites/tile_104.png';
+// UI
 import chevron from '../assets/sprites/ui/chevron.png';
 import menu from '../assets/sprites/ui/menu.png';
 import outline from '../assets/sprites/ui/outline.png';
+import rotate from '../assets/sprites/ui/rotate.png';
 import selector from '../assets/sprites/ui/selector.png';
 import { createAssetProvider } from '../core/asset-loader';
 import { AbstractTile, TileType } from '../stores/grid/grid.tiles';
@@ -25,7 +32,7 @@ export const tiles = {
     grass_3: tile_024,
     shallow_water_1: tile_104,
     rocks_1: tile_061,
-    rocks_2: tile_064,
+    rocks_2: tile_063,
 };
 
 export const textureMatcher: Record<AbstractTile, TileType[]> = {
@@ -41,6 +48,7 @@ export const assets = {
     menu,
     outline,
     chevron,
+    rotate,
 };
 
 export type AssetType = keyof typeof tiles;
