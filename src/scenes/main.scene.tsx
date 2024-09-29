@@ -72,7 +72,7 @@ export const Main: Scene = () => {
         <>
             <Overlay />
             <Lights />
-            <TileStack />
+            {device.isLandscape && <TileStack />}
             <group onPointerDown={(ev) => handleTileClicked(ev)}>
                 {grid.tiles.map((tile, idx) => (
                     <TileRenderer
