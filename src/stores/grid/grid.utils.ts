@@ -66,6 +66,15 @@ class UpgradeActions {
             },
         },
         {
+            from: ['soil'],
+            to: ['grass'],
+            action: (state, tile, target) => {
+                this.increaseScore(4);
+                this.grantNewTiles('grass');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
             from: ['grass'],
             to: ['rocks'],
             action: (state, tile, target) => {
@@ -115,7 +124,7 @@ class UpgradeActions {
             to: ['shallow_water'],
             action: (state, tile) => {
                 this.increaseScore(10);
-                this.grantNewTiles('rocks');
+                this.grantNewTiles('dirt');
                 return this.swapTiles(state, tile, 'soil');
             },
         },
@@ -132,7 +141,7 @@ class UpgradeActions {
         // selector tiles should be generated
         {
             from: ['selector'],
-            to: ['dirt', 'grass', 'shallow_water', 'soil'],
+            to: ['dirt', 'grass', 'shallow_water', 'soil', 'rocks'],
             action: (state, tile) => {
                 return this.addNewSelectorTiles(state, tile);
             },

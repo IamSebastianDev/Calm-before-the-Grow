@@ -20,7 +20,7 @@ const AnimatedTile = ({ idx, type }: AnimatedTileProps) => {
 
     // Use spring to animate the position of each tile
     const { position } = useSpring({
-        position: isHighlighted ? [0.15, idx * 0.5, idx] : [0, idx * 0.5, idx],
+        position: isHighlighted ? [0.15, idx * 0.5, idx] : [0, idx * 0.5, idx + 1],
         config: { tension: 170, friction: 26 },
     });
 
@@ -53,10 +53,10 @@ export const TileStack = () => {
     const remaining = 15 - (timer % 15);
 
     useEffect(() => {
-        if (remaining === 1) {
+        if (remaining === 15 && tiles.length < 32) {
             addTilesToStack(getRandomAbstractTile());
         }
-    }, [remaining]);
+    }, [remaining, tiles]);
 
     useFrame(() => {
         if ('isOrthographicCamera' in camera && camera.isOrthographicCamera) {

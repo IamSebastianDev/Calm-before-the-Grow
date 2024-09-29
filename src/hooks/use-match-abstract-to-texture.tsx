@@ -6,7 +6,7 @@ import { useAssets } from '../providers/asset.provider';
 import { AbstractTile, TileType } from '../stores/grid/grid.tiles';
 
 const textureMatcher: Record<AbstractTile, TileType[]> = {
-    dirt: ['dirt_1'],
+    dirt: ['dirt_1', 'dirt_2'],
     grass: ['grass_1'],
     soil: ['soil_1'],
     selector: ['selector'],

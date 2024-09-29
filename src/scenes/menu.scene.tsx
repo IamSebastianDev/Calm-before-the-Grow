@@ -32,6 +32,9 @@ export const Menu: Scene = () => {
                         <button className="ui-button" onPointerDown={() => handleStartGameClick()}>
                             Start new Game
                         </button>
+                        <button disabled className="ui-button" onPointerDown={() => handleStartGameClick()}>
+                            Continue Game
+                        </button>
                         <button className="ui-button">Options</button>
                     </div>
                 </div>
