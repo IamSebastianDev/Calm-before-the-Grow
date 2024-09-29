@@ -5,10 +5,10 @@ import { Text } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
-import { useMatchAbstractToTexture } from '../hooks/use-abstract-type';
 import { useClock } from '../hooks/use-clock';
+import { useMatchAbstractToTexture } from '../hooks/use-match-abstract-to-texture';
 import { useAssets } from '../providers/asset.provider';
-import { AbstractTile } from '../stores/grid/grid.tiles';
+import { AbstractTile, getRandomAbstractTile } from '../stores/grid/grid.tiles';
 import { addTilesToStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
@@ -53,8 +53,8 @@ export const TileStack = () => {
     const remaining = 15 - (timer % 15);
 
     useEffect(() => {
-        if (remaining === 15) {
-            addTilesToStack('dirt');
+        if (remaining === 0) {
+            addTilesToStack(getRandomAbstractTile());
         }
     }, [remaining]);
 

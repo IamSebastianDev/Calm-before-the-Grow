@@ -1,6 +1,7 @@
 /** @format */
 
 import { Vector2 } from 'three';
+import { random } from '../../functions/random';
 import { AssetType } from '../../providers/asset.provider';
 
 export const abstractTileTypes = ['selector', 'dirt', 'grass'] as const;
@@ -13,6 +14,12 @@ export type AnimatedTile = Tile & {
     columns: number;
     rows: number;
     frames: number;
+};
+
+export const getRandomAbstractTile = () => {
+    // We filter the selector tile, as we do not wan't any animated tiles
+    const tiles = [...abstractTileTypes].filter((tile) => tile !== 'selector');
+    return random<Exclude<AbstractTile, 'selector'>>(tiles);
 };
 
 export class Tile {

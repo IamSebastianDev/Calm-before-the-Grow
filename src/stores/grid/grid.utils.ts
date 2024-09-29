@@ -29,6 +29,13 @@ class UpgradeActions {
             return from.includes(current) && to.includes(next);
         });
 
+        // If there are no state machine entries to be found, simply
+        // replace the current tile with the new one, swapping them
+        console.log({ stateMachineEntries });
+        if (stateMachineEntries.length === 0) {
+            return [this.swapTiles];
+        }
+
         return stateMachineEntries.map(({ action }) => action);
     }
 
@@ -62,6 +69,11 @@ class UpgradeActions {
             },
         },
     ];
+
+    private swapTiles = (state: GridStore, tile: Tile, next: AbstractTile) => {
+        const tiles = new Map(state.tiles.set(this.getTileId(tile), new Tile(tile.position, next)));
+        return { ...state, tiles };
+    };
 
     private grantNewTiles(...tiles: AbstractTile[]) {
         addTilesToStack(...tiles);

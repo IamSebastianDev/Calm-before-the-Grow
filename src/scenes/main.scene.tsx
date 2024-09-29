@@ -51,15 +51,15 @@ export const Main: Scene = () => {
 
     const handleTileClicked = (event: ThreeEvent<PointerEvent>) => {
         event.stopPropagation();
+        const next = stack.tiles.at(-1);
 
         // On each click, we get the tile closest to the event
         const [tile] = grid.tiles.sort(sortTilesByProximity(event));
         // if the distance between closest and event.point is larger then 1, we return early
-        if (tile.position.distanceTo(new Vector2(event.point.x, event.point.y)) > 10) {
+        if (tile.position.distanceTo(new Vector2(event.point.x, event.point.y)) > 10 || !next) {
             return;
         }
 
-        const next = stack.tiles.at(-1)!;
         upgradeTile(tile, next);
         takeTileFromStack();
     };

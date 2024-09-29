@@ -13,6 +13,8 @@ export const upgradeTile = (tile: Tile, type: AbstractTile) => {
         // store. Each action receives the state as well as the triggering
         // tile
         const actions = upgradeActions.getTileUpgradeAction(tile.type, type);
+
+        // Return the updated state
         return actions.reduce((cur, acc) => acc(cur, tile, type), state);
     });
 };

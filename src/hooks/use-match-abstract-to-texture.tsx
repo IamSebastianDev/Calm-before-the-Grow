@@ -1,6 +1,7 @@
 /** @format */
 
 import { useMemo } from 'react';
+import { random } from '../functions/random';
 import { useAssets } from '../providers/asset.provider';
 import { AbstractTile, TileType } from '../stores/grid/grid.tiles';
 
@@ -10,16 +11,10 @@ const textureMatcher: Record<AbstractTile, TileType[]> = {
     selector: ['selector'],
 };
 
-const getRandomTextureTypeFromMatcher = (abstract: AbstractTile) => {
-    const textureKeys = textureMatcher[abstract];
-
-    return textureKeys[Math.floor(Math.random() * textureKeys.length) * 1];
-};
-
 export const useMatchAbstractToTexture = (abstract: AbstractTile) => {
     const assets = useAssets();
     const texture = useMemo(() => {
-        const key = getRandomTextureTypeFromMatcher(abstract);
+        const key = random(textureMatcher[abstract]);
         return assets[key];
     }, [abstract, assets]);
 
