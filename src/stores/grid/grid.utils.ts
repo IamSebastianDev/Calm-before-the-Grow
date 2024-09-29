@@ -41,7 +41,7 @@ class UpgradeActions {
     private actions: Array<UpgradeActionStateMachineEntry> = [
         {
             from: ['selector'],
-            to: ['dirt', 'grass', 'soil'],
+            to: ['dirt', 'grass', 'soil', 'rocks'],
             action: (state, tile, target) => {
                 this.increaseScore(2);
                 return this.swapTiles(state, tile, target);
@@ -66,6 +66,42 @@ class UpgradeActions {
             },
         },
         {
+            from: ['grass'],
+            to: ['rocks'],
+            action: (state, tile, target) => {
+                this.increaseScore(2);
+                this.grantNewTiles('soil', 'soil');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
+            from: ['soil'],
+            to: ['dirt'],
+            action: (state, tile, target) => {
+                this.increaseScore(-2);
+                this.grantNewTiles('shallow_water');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
+            from: ['dirt'],
+            to: ['soil'],
+            action: (state, tile, target) => {
+                this.increaseScore(-2);
+                this.grantNewTiles('shallow_water');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
+            from: ['grass'],
+            to: ['shallow_water'],
+            action: (state, tile, target) => {
+                this.increaseScore(4);
+                this.grantNewTiles('rocks');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        {
             from: ['dirt'],
             to: ['grass'],
             action: (state, tile, target) => {
@@ -74,13 +110,21 @@ class UpgradeActions {
                 return this.swapTiles(state, tile, target);
             },
         },
-
         {
-            from: ['dirt', 'soil'],
+            from: ['dirt'],
             to: ['shallow_water'],
             action: (state, tile) => {
                 this.increaseScore(10);
-                this.grantNewTiles('grass', 'grass');
+                this.grantNewTiles('rocks');
+                return this.swapTiles(state, tile, 'soil');
+            },
+        },
+        {
+            from: ['soil'],
+            to: ['shallow_water'],
+            action: (state, tile) => {
+                this.increaseScore(10);
+                this.grantNewTiles('grass');
                 return this.swapTiles(state, tile, 'grass');
             },
         },

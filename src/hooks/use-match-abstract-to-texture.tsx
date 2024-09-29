@@ -11,6 +11,7 @@ const textureMatcher: Record<AbstractTile, TileType[]> = {
     soil: ['soil_1'],
     selector: ['selector'],
     shallow_water: ['shallow_water_1'],
+    rocks: ['rocks_1'],
 };
 
 export const useMatchAbstractToTexture = (abstract: AbstractTile) => {

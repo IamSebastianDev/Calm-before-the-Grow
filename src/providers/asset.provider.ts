@@ -2,6 +2,7 @@
 import tile_001 from '../assets/sprites/tile_001.png';
 import tile_017 from '../assets/sprites/tile_017.png';
 import tile_022 from '../assets/sprites/tile_022.png';
+import tile_061 from '../assets/sprites/tile_061.png';
 import tile_104 from '../assets/sprites/tile_104.png';
 import menu from '../assets/sprites/ui/menu.png';
 import outline from '../assets/sprites/ui/outline.png';
@@ -14,6 +15,7 @@ export const tiles = {
     soil_1: tile_017,
     grass_1: tile_022,
     shallow_water_1: tile_104,
+    rocks_1: tile_061,
 };
 
 export const assets = {
