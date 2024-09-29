@@ -2,6 +2,7 @@
 
 import { Vector2 } from 'three';
 import { useGameState } from '../game-state/game-state.store';
+import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
 import { SelectorTile, Tile, TileType } from './grid.tiles';
 
@@ -36,13 +37,39 @@ class UpgradeActions {
             from: ['selector'],
             to: ['dirt_1', 'grass_1'],
             action: (state, tile, target) => {
-                useGameState.setState((state) => ({ score: state.score + 2 }));
+                this.increaseScore(2);
                 state.tiles.set(this.getTileId(tile), new Tile(new Vector2(tile.position.x, tile.position.y), target));
                 const newState = this.addNewSelectorTiles(state, tile);
                 return { ...newState };
             },
         },
+        {
+            from: ['dirt_1'],
+            to: ['grass_1'],
+            action: (state, tile, target) => {
+                this.increaseScore(4);
+                this.grantNewTiles('dirt_1', 'dirt_1');
+
+                return {
+                    ...state,
+                    tiles: new Map(
+                        state.tiles.set(
+                            this.getTileId(tile),
+                            new Tile(new Vector2(tile.position.x, tile.position.y), target),
+                        ),
+                    ),
+                };
+            },
+        },
     ];
+
+    private grantNewTiles(...tiles: TileType[]) {
+        addTilesToStack(...tiles);
+    }
+
+    private increaseScore(amount = 1) {
+        useGameState.setState((state) => ({ score: state.score + amount }));
+    }
 
     private getTileId(tile: Tile) {
         return `${tile.position.x}:${tile.position.y}`;

@@ -1,11 +1,12 @@
 /** @format */
 
-import { Vector3 } from 'three';
+import { Vector2, Vector3 } from 'three';
 import { Lights } from '../components/lights';
 
 import { TileRenderer } from '../components/tile-renderer';
 import { useControllerAction } from '../core/controller';
 
+import { ThreeEvent } from '@react-three/fiber';
 import { Overlay } from '../components/overlay';
 import { TileStack } from '../components/tile-stack';
 import { Scene, useScene } from '../core/scene-manager';
@@ -25,6 +26,13 @@ import { calculateOffsetAmount } from '../stores/grid/grid.utils';
 import { takeTileFromStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
+const sortTilesByProximity =
+    ({ point }: ThreeEvent<PointerEvent>) =>
+    (a: Tile, b: Tile) => {
+        const point2d = new Vector2(point.x, point.y);
+        return a.position.distanceTo(point2d) > b.position.distanceTo(point2d) ? 1 : -1;
+    };
+
 export const Main: Scene = () => {
     const sceneManager = useScene();
     const assets = useAssets();
@@ -41,9 +49,17 @@ export const Main: Scene = () => {
 
     console.log({ game, sceneManager, assets, controller, grid });
 
-    const handleTileClicked = (tile: Tile) => {
+    const handleTileClicked = (event: ThreeEvent<PointerEvent>) => {
+        event.stopPropagation();
+
+        // On each click, we get the tile closest to the event
+        const [tile] = grid.tiles.sort(sortTilesByProximity(event));
+        // if the distance between closest and event.point is larger then 1, we return early
+        if (tile.position.distanceTo(new Vector2(event.point.x, event.point.y)) > 10) {
+            return;
+        }
+
         const next = stack.tiles.at(-1)!;
-        console.log({ tile, next });
         upgradeTile(tile, next);
         takeTileFromStack();
     };
@@ -53,16 +69,21 @@ export const Main: Scene = () => {
             <Overlay />
             <Lights />
             <TileStack />
-            {grid.tiles.map((tile, idx) => (
-                <TileRenderer
-                    onPointerDown={() => handleTileClicked(tile)}
-                    tile={tile}
-                    key={tile.id}
-                    position={
-                        new Vector3(tile.position.x + grid.offset.x, tile.position.y + grid.offset.y, idx * 0.000001)
-                    }
-                />
-            ))}
+            <group onPointerDown={(ev) => handleTileClicked(ev)}>
+                {grid.tiles.map((tile, idx) => (
+                    <TileRenderer
+                        tile={tile}
+                        key={tile.id}
+                        position={
+                            new Vector3(
+                                tile.position.x + grid.offset.x,
+                                tile.position.y + grid.offset.y,
+                                idx * 0.000001,
+                            )
+                        }
+                    />
+                ))}
+            </group>
         </>
     );
 };
