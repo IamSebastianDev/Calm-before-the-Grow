@@ -42,17 +42,17 @@
 
 @keyframes fadeIn {
     0% {
-        opacity: 0;
+        opacity: 1;
     }
     100% {
-        opacity: 1;
+        opacity: 0;
     }
 }
 
 .fades-in {
-    opacity: 0; /* Start hidden */
-    animation: fadeIn 2s ease-in forwards; /* 3s animation duration */
-    animation-delay: 2s; /* Start the animation after 2 seconds */
+    opacity: 1; /* Start hidden */
+    animation: fadeIn 2.5s ease-out forwards; /* 3s animation duration */
+    animation-delay: 0.25s;
 }
 
 /* Overlays */
@@ -73,6 +73,12 @@
     font-size: 2.2rem;
     translate: 0 -1px;
     letter-spacing: 2.5px;
+}
+
+.overlay-fade-in {
+    position: fixed;
+    inset: 0;
+    background-color: black;
 }
 
 /* Main Menu */
