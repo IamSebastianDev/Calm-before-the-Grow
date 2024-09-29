@@ -2,10 +2,10 @@
 
 import { Vector2 } from 'three';
 import { useGridStore } from './grid.store';
-import { Tile, TileType } from './grid.tiles';
+import { AbstractTile, Tile } from './grid.tiles';
 import { upgradeActions } from './grid.utils';
 
-export const upgradeTile = (tile: Tile, type: TileType) => {
+export const upgradeTile = (tile: Tile, type: AbstractTile) => {
     useGridStore.setState((state) => {
         // To upgrade a tile, we first get the tile upgrade actions,
         // then execute the actions, and letting each action modify
