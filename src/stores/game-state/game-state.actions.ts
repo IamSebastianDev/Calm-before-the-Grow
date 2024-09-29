@@ -8,7 +8,9 @@ import { useGameState } from './game-state.store';
 
 export const startGame = () => {
     useGameState.setState(() => ({ score: 0 }));
-    useStackStore.setState(() => ({ tiles: ['dirt_1', 'dirt_1', 'dirt_1'] }));
+    useStackStore.setState(() => ({
+        tiles: ['dirt_1', 'dirt_1', 'dirt_1'],
+    }));
     useGridStore.setState(() => ({
         tiles: new Map([['0:0', new SelectorTile(new Vector2(0, 0))]]),
         offset: new Vector2(0, 0),
