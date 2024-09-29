@@ -53,10 +53,12 @@ export const TileStack = () => {
     const remaining = 15 - (timer % 15);
 
     useEffect(() => {
-        if (remaining === 15 && tiles.length < 32) {
-            addTilesToStack(getRandomAbstractTile());
+        if (remaining === 15) {
+            if (tiles.length < 32) {
+                addTilesToStack(getRandomAbstractTile());
+            }
         }
-    }, [remaining, tiles]);
+    }, [remaining]);
 
     useFrame(() => {
         if ('isOrthographicCamera' in camera && camera.isOrthographicCamera) {

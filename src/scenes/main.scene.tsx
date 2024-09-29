@@ -7,9 +7,11 @@ import { TileRenderer } from '../components/tile-renderer';
 import { useControllerAction } from '../core/controller';
 
 import { ThreeEvent } from '@react-three/fiber';
+import { MobileController } from '../components/mobile-controller';
 import { Overlay } from '../components/overlay';
 import { TileStack } from '../components/tile-stack';
 import { Scene, useScene } from '../core/scene-manager';
+import { useDevice } from '../hooks/use-device';
 import { useAssets } from '../providers/asset.provider';
 import { useController } from '../providers/controller.provider';
 import { useGameState } from '../stores/game-state/game-state.store';
@@ -41,6 +43,7 @@ export const Main: Scene = () => {
     const grid = useOrderedGrid();
     const game = useGameState();
     const stack = useStackStore();
+    const device = useDevice();
 
     // Set up basic controls for panning around
     const controller = useController();
@@ -49,7 +52,7 @@ export const Main: Scene = () => {
     useControllerAction(controller, 'PAN_DOWN', (_, keys) => moveGridOffsetDown(calculateOffsetAmount(keys)));
     useControllerAction(controller, 'PAN_UP', (_, keys) => moveGridOffsetUp(calculateOffsetAmount(keys)));
 
-    console.log({ game, sceneManager, assets, controller, grid });
+    console.log({ game, sceneManager, assets, controller, grid, device });
 
     const handleTileClicked = (event: ThreeEvent<PointerEvent>) => {
         event.stopPropagation();
@@ -70,6 +73,7 @@ export const Main: Scene = () => {
         <>
             <Overlay />
             <Lights />
+            {device.isMobile && <MobileController />}
             <TileStack />
             <group onPointerDown={(ev) => handleTileClicked(ev)}>
                 {grid.tiles.map((tile, idx) => (

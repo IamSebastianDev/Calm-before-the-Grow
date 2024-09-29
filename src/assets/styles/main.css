@@ -39,7 +39,7 @@
 }
 
 .ui-button:disabled {
-    filter: brightness(0.5);
+    filter: brightness(0.4);
     cursor: auto;
 }
 
@@ -101,4 +101,36 @@
     flex-direction: column;
     gap: 1rem;
     cursor: pointer;
+}
+
+/* Mobile controller */
+.mobile-controller {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 1rem;
+}
+
+.mobile-controller > .up {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.mobile-controller > .down {
+    grid-column: 2;
+    grid-row: 3;
+    rotate: 180deg;
+}
+.mobile-controller > .right {
+    grid-column: 3;
+    grid-row: 2;
+    rotate: 90deg;
+}
+.mobile-controller > .left {
+    grid-column: 1;
+    grid-row: 2;
+    rotate: -90deg;
 }
