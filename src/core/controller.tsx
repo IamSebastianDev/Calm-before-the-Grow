@@ -27,7 +27,15 @@ export class Controller<T extends string> {
         }
     };
     private removeKey = (event: KeyboardEvent) => {
-        this.activeKeys.delete(event.key);
+        const { key } = event;
+        this.activeKeys.delete(key);
+
+        // Match the action
+        const matchedActionTypes = this.matchAction(key);
+        const actions = matchedActionTypes.flatMap((type) => [...(this.resolverMap.get(type as T) ?? [])]);
+        for (const action of actions) {
+            action(event, [...this.activeKeys]);
+        }
     };
 
     // Matcher
@@ -61,17 +69,26 @@ export class Controller<T extends string> {
     }
 
     actionMap = new Map<T, Set<KeyAction>>();
-    on(actionType: T, action: KeyAction) {
+    resolverMap = new Map<T, Set<KeyAction>>();
+    on(actionType: T, action: KeyAction, resolve?: KeyAction) {
         // Get or create the action set
         const actions = this.actionMap.get(actionType) ?? new Set<KeyAction>();
+        const resolvers = this.resolverMap.get(actionType) ?? new Set<KeyAction>();
 
         // Update the mapping and set the updated set as new map value
         actions.add(action);
         this.actionMap.set(actionType, actions);
+        if (resolve) {
+            resolvers.add(resolve);
+        }
+        this.resolverMap.set(actionType, resolvers);
 
         // Return the clean up function
         return () => {
             this.actionMap.get(actionType)?.delete(action);
+            if (resolve) {
+                this.resolverMap.get(actionType)?.delete(resolve);
+            }
         };
     }
 }
@@ -114,9 +131,14 @@ export const createControllerProvider = <T extends string>(actions: T[], initial
 
 // Custom hook to ease sub and unsubscribe handling
 // @todo -> Check if sync external store might work here?
-export const useControllerAction = <T extends string>(controller: Controller<T>, type: T, action: KeyAction) => {
+export const useControllerAction = <T extends string>(
+    controller: Controller<T>,
+    type: T,
+    action: KeyAction,
+    resolve?: KeyAction,
+) => {
     useEffect(() => {
-        const unsubscribe = controller.on(type, action);
+        const unsubscribe = controller.on(type, action, resolve);
         return () => unsubscribe();
     }, []);
 };

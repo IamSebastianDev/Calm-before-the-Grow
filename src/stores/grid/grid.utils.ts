@@ -17,6 +17,7 @@ export type UpgradeActionStateMachineEntry = {
     from: Array<AbstractTile>;
     to: Array<AbstractTile>;
     action: (state: GridStore, tile: Tile, target: AbstractTile) => GridStore;
+    hint?: string;
 };
 
 type RowPattern = [AbstractTile, AbstractTile, AbstractTile];
@@ -83,7 +84,7 @@ export const getNeighbors = (tile: Tile, tiles: Map<string, Tile>) => {
 class UpgradeActions {
     // The primary state machine accessor, returns all matching actions
     // defined in the state machine
-    getTileUpgradeAction(current: AbstractTile, next: AbstractTile) {
+    getTileUpgradeAction(current: AbstractTile, next: AbstractTile): UpgradeActionStateMachineEntry[] {
         const stateMachineEntries = this.actions.filter(({ from, to }) => {
             return from.includes(current) && to.includes(next);
         });
@@ -92,14 +93,18 @@ class UpgradeActions {
         // replace the current tile with the new one, swapping them
         if (stateMachineEntries.length === 0) {
             return [
-                (state: GridStore, tile: Tile, target: AbstractTile) => {
-                    this.destroyPropsOnTile(tile);
-                    return this.swapTiles(state, tile, target);
+                {
+                    from: [],
+                    to: [],
+                    action: (state: GridStore, tile: Tile, target: AbstractTile) => {
+                        this.destroyPropsOnTile(tile);
+                        return this.swapTiles(state, tile, target);
+                    },
                 },
             ];
         }
 
-        return stateMachineEntries.map(({ action }) => action);
+        return stateMachineEntries;
     }
 
     private actions: Array<UpgradeActionStateMachineEntry> = [
@@ -173,6 +178,7 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            hint: '+4',
         },
 
         {
@@ -184,6 +190,7 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            hint: '-2',
         },
         {
             from: ['soil'],
@@ -194,6 +201,7 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, 'grass');
             },
+            hint: '+10',
         },
         // Dirt
         {
@@ -225,6 +233,7 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, 'soil');
             },
+            hint: '+10',
         },
         // Rocks
         {

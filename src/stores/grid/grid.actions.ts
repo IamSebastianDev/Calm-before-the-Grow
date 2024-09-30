@@ -12,7 +12,7 @@ export const upgradeTile = (tile: Tile, type: AbstractTile) => {
         // the state before merging the completed state back into the
         // store. Each action receives the state as well as the triggering
         // tile
-        const actions = upgradeActions.getTileUpgradeAction(tile.type, type);
+        const actions = upgradeActions.getTileUpgradeAction(tile.type, type).map(({ action }) => action);
         const updated = actions.reduce((cur, acc) => acc(cur, tile, type), state);
 
         // Apply the effect actions
