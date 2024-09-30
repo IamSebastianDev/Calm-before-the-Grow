@@ -93,24 +93,7 @@ export const TileStack = () => {
             {currentTiles.map((tile, idx) => (
                 <AnimatedTile key={idx} type={tile} idx={idx} top={idx === currentTiles.length - 1} />
             ))}
-            {/* Next indicator */}
-            {currentTiles.length > 0 && (
-                <group position={new Vector3(0, currentTiles.length * 0.5 + 0.4, 5)}>
-                    <Text
-                        fontSize={0.3}
-                        font={'/fonts/monogram.ttf'}
-                        color="white"
-                        textAlign="center"
-                        anchorX="center"
-                        anchorY="middle"
-                    >
-                        Next
-                    </Text>
-                    <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
-                        <spriteMaterial map={assets.outline} />
-                    </sprite>
-                </group>
-            )}
+
             {/* Seconds til next tile */}
             <group position={new Vector3(1, 0, 1)} scale={0.75}>
                 <Text
@@ -128,7 +111,7 @@ export const TileStack = () => {
                 </sprite>
             </group>
             {/* Number of available tiles */}
-            <group position={new Vector3(1, 0.75, 1)} scale={0.75}>
+            <group position={new Vector3(1, 0.7, 1)} scale={0.75}>
                 <Text
                     fontSize={0.4}
                     font={'/fonts/monogram.ttf'}
@@ -143,6 +126,24 @@ export const TileStack = () => {
                     <spriteMaterial map={assets.outline} />
                 </sprite>
             </group>
+            {/* Next indicator */}
+            {currentTiles.length > 0 && (
+                <group position={new Vector3(1.25, Math.max(currentTiles.length * 0.5 - 0.5, 1.4), 5)} scale={0.75}>
+                    <Text
+                        fontSize={0.28}
+                        font={'/fonts/monogram.ttf'}
+                        color="white"
+                        textAlign="center"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        Next
+                    </Text>
+                    <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
+                        <spriteMaterial map={assets.outline} />
+                    </sprite>
+                </group>
+            )}
         </group>
     );
 };
