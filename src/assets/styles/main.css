@@ -175,14 +175,36 @@
     gap: 1.25rem;
     margin: 0.5rem;
     padding: 0.5rem;
-    width: 40vw;
+    padding-inline: 2rem;
     align-self: center;
-    border: 1px solid white;
+    border-block: 1px solid white;
     background: rgba(0, 0, 0, 0.5);
     opacity: 1;
     pointer-events: all;
     transition: opacity 0.5s ease-in-out;
     filter: brightness(0.7);
+    position: relative;
+}
+
+.reset-to-center:before {
+    content: '';
+    position: absolute;
+    width: 29.5px;
+    aspect-ratio: 1 / 1;
+    rotate: 45deg;
+    left: -15.75px;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
+}
+.reset-to-center:after {
+    content: '';
+    position: absolute;
+    width: 29.5px;
+    aspect-ratio: 1 / 1;
+    rotate: 225deg;
+    right: -15.75px;
+    border-left: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 .reset-to-center.hidden {
