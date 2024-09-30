@@ -17,6 +17,8 @@ import tile_064 from '../assets/sprites/tile_064.png';
 import tile_104 from '../assets/sprites/tile_104.png';
 // Flowers
 import tile_041 from '../assets/sprites/tile_041.png';
+import tile_042 from '../assets/sprites/tile_042.png';
+import tile_044 from '../assets/sprites/tile_044.png';
 // UI
 import chevron from '../assets/sprites/ui/chevron.png';
 import menu from '../assets/sprites/ui/menu.png';
@@ -41,6 +43,8 @@ export const tiles = {
 
 export const props = {
     flower_01: tile_041,
+    flower_02: tile_042,
+    flower_03: tile_044,
     small_rock_01: tile_064,
 };
 

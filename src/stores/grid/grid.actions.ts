@@ -36,3 +36,7 @@ export const moveGridOffsetLeft = (amount: number = 0.25) => moveGridOffset(amou
 export const moveGridOffsetRight = (amount: number = 0.25) => moveGridOffset(-amount, 0);
 export const moveGridOffsetUp = (amount: number = 0.25) => moveGridOffset(0, -amount);
 export const moveGridOffsetDown = (amount: number = 0.25) => moveGridOffset(0, amount);
+
+export const resetGridOffset = () => {
+    useGridStore.setState(() => ({ offset: new Vector2(0, 0) }));
+};

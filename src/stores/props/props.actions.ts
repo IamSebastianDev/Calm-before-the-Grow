@@ -1,5 +1,6 @@
 /** @format */
 
+import { random } from '../../functions/random';
 import { Tile } from '../grid/grid.tiles';
 import { Prop, PropType, usePropsStore } from './props.store';
 
@@ -8,4 +9,8 @@ export const addProp = (type: PropType, tile: Tile) => {
         const prop = new Prop(tile.position, type);
         return { props: new Map(state.props).set(prop.serialId, prop) };
     });
+};
+
+export const getRandomFlower = (): PropType => {
+    return random(['flower_01', 'flower_02', 'flower_03']);
 };

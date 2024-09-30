@@ -2,7 +2,7 @@
 
 import { Vector2 } from 'three';
 import { addToScore } from '../game-state/game-state.actions';
-import { addProp } from '../props/props.actions';
+import { addProp, getRandomFlower } from '../props/props.actions';
 import { PropType, usePropsStore } from '../props/props.store';
 import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
@@ -149,7 +149,7 @@ class UpgradeActions {
             action: (state, tile) => {
                 this.increaseScore(4);
                 this.grantNewTiles('dirt');
-                this.addPropToTile('flower_01', tile);
+                this.addPropToTile(getRandomFlower(), tile);
                 console.log({ state, tile, props: usePropsStore.getState() });
                 return state;
             },
@@ -159,7 +159,7 @@ class UpgradeActions {
             to: ['grass'],
             action: (state, tile) => {
                 this.increaseScore(4);
-                this.addPropToTile('flower_01', tile);
+                this.addPropToTile(getRandomFlower(), tile);
                 return state;
             },
         },
@@ -319,7 +319,7 @@ class UpgradeActions {
             pattern: ['soil', 'grass', 'soil', 'grass', 'shallow_water', 'grass', 'soil', 'grass', 'soil'],
             action: (state, tile, _, neighbors) => {
                 this.increaseScore(40);
-                neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile('flower_01', tile));
+                neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile(getRandomFlower(), tile));
                 this.destroyPropsOnTile(tile);
                 return state;
             },
@@ -329,7 +329,7 @@ class UpgradeActions {
             pattern: ['grass', 'grass', 'grass', 'grass', 'rocks', 'grass', 'grass', 'grass', 'grass'],
             action: (state, tile, _, neighbors) => {
                 this.increaseScore(40);
-                neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile('flower_01', tile));
+                neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile(getRandomFlower(), tile));
                 this.addPropToTile('small_rock_01', tile);
                 return state;
             },
