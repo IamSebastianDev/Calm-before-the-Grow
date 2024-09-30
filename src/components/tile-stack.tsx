@@ -85,12 +85,32 @@ export const TileStack = () => {
         }
     });
 
+    const currentTiles = tiles.slice(-9);
+
     return (
         <group ref={ref}>
             {/* Tiles */}
-            {tiles.slice(-5).map((tile, idx) => (
+            {currentTiles.map((tile, idx) => (
                 <AnimatedTile key={idx} type={tile} idx={idx}></AnimatedTile>
             ))}
+            {/* Next indicator */}
+            {currentTiles.length > 0 && (
+                <group position={new Vector3(0, currentTiles.length * 0.5 + 0.4, 5)}>
+                    <Text
+                        fontSize={0.3}
+                        font={'/fonts/monogram.ttf'}
+                        color="white"
+                        textAlign="center"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        Next
+                    </Text>
+                    <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
+                        <spriteMaterial map={assets.outline} />
+                    </sprite>
+                </group>
+            )}
             {/* Seconds til next tile */}
             <group position={new Vector3(1, 0, 1)} scale={0.75}>
                 <Text

@@ -56,21 +56,13 @@ class UpgradeActions {
                 return this.swapTiles(state, tile, target);
             },
         },
+        // Grass
         {
             from: ['grass'],
             to: ['soil'],
             action: (state, tile, target) => {
                 this.increaseScore(2);
                 this.grantNewTiles('dirt', 'dirt');
-                return this.swapTiles(state, tile, target);
-            },
-        },
-        {
-            from: ['soil'],
-            to: ['grass'],
-            action: (state, tile, target) => {
-                this.increaseScore(4);
-                this.grantNewTiles('grass');
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -84,6 +76,26 @@ class UpgradeActions {
             },
         },
         {
+            from: ['grass'],
+            to: ['shallow_water'],
+            action: (state, tile, target) => {
+                this.increaseScore(4);
+                this.grantNewTiles('rocks');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+        // Soil
+        {
+            from: ['soil'],
+            to: ['grass'],
+            action: (state, tile, target) => {
+                this.increaseScore(4);
+                this.grantNewTiles('grass');
+                return this.swapTiles(state, tile, target);
+            },
+        },
+
+        {
             from: ['soil'],
             to: ['dirt'],
             action: (state, tile, target) => {
@@ -93,20 +105,21 @@ class UpgradeActions {
             },
         },
         {
+            from: ['soil'],
+            to: ['shallow_water'],
+            action: (state, tile) => {
+                this.increaseScore(10);
+                this.grantNewTiles('grass');
+                return this.swapTiles(state, tile, 'grass');
+            },
+        },
+        // Dirt
+        {
             from: ['dirt'],
             to: ['soil'],
             action: (state, tile, target) => {
                 this.increaseScore(-2);
                 this.grantNewTiles('shallow_water');
-                return this.swapTiles(state, tile, target);
-            },
-        },
-        {
-            from: ['grass'],
-            to: ['shallow_water'],
-            action: (state, tile, target) => {
-                this.increaseScore(4);
-                this.grantNewTiles('rocks');
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -128,15 +141,7 @@ class UpgradeActions {
                 return this.swapTiles(state, tile, 'soil');
             },
         },
-        {
-            from: ['soil'],
-            to: ['shallow_water'],
-            action: (state, tile) => {
-                this.increaseScore(10);
-                this.grantNewTiles('grass');
-                return this.swapTiles(state, tile, 'grass');
-            },
-        },
+
         // This action is executed whenever a selector tile is upgraded, and new
         // selector tiles should be generated
         {
