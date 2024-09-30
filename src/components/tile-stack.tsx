@@ -20,7 +20,9 @@ const AnimatedTile = ({ idx, type, top }: AnimatedTileProps) => {
 
     // Use spring to animate the position of each tile
     const { position } = useSpring({
-        position: isHighlighted ? [top ? 0.35 : 0.15, idx * 0.5, idx] : [top ? 0.25 : 0, idx * 0.5, idx + 1],
+        position: isHighlighted
+            ? [top && idx > 3 ? 0.35 : 0.15, idx * 0.5, idx]
+            : [top && idx > 3 ? 0.25 : 0, idx * 0.5, idx + 1],
         config: { tension: 170, friction: 26 },
     });
 
@@ -127,7 +129,7 @@ export const TileStack = () => {
                 </sprite>
             </group>
             {/* Next indicator */}
-            {currentTiles.length > 0 && (
+            {currentTiles.length > 3 && (
                 <group position={new Vector3(1.25, Math.max(currentTiles.length * 0.5 - 0.5, 1.4), 5)} scale={0.75}>
                     <Text
                         fontSize={0.28}

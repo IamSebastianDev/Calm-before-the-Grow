@@ -6,12 +6,14 @@ export const useClock = (interval: number) => {
     const [clock, setClock] = useState(0);
 
     const tick = () => setClock((c) => c + 1);
-    const ref = useRef<number | Timer>();
+    const ref = useRef<number | Timer | null>();
 
     useEffect(() => {
         ref.current = setInterval(() => tick(), 1000 * interval);
-        return () => clearInterval(ref.current);
-    });
+        return () => {
+            if (ref.current) clearInterval(ref.current);
+        };
+    }, []);
 
     return clock;
 };
