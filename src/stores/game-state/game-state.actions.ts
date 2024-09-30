@@ -22,3 +22,21 @@ export const startGame = () => {
 export const addToScore = (amount = 0) => {
     useGameState.setState((state) => ({ score: state.score + amount }));
 };
+
+let timerId: Timer | number | null = null;
+export const startClock = () => {
+    if (timerId !== null) {
+        clearInterval(timerId);
+    }
+
+    timerId = setInterval(() => {
+        useGameState.setState((state) => ({ clock: state.clock + 1 }));
+    }, 500);
+};
+
+export const stopClock = () => {
+    if (timerId !== null) {
+        clearInterval(timerId);
+        timerId = null;
+    }
+};

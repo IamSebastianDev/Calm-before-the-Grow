@@ -5,9 +5,9 @@ import { Text } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
 import { Vector3 } from 'three';
-import { useClock } from '../hooks/use-clock';
 import { useMatchAbstractToTexture } from '../hooks/use-match-abstract-to-texture';
 import { useAssets } from '../providers/asset.provider';
+import { useGameState } from '../stores/game-state/game-state.store';
 import { AbstractTile, getRandomAbstractTile } from '../stores/grid/grid.tiles';
 import { addTilesToStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
@@ -88,11 +88,11 @@ export const TileStack = () => {
     const ref = useRef<any>();
     const { camera, size } = useThree();
 
-    const timer = useClock(1);
-    const remaining = 15 - (timer % 15);
+    const timer = useGameState((state) => state.clock);
+    const remaining = 30 - (timer % 30);
 
     useEffect(() => {
-        if (remaining === 15) {
+        if (remaining === 30) {
             if (tiles.length < 32) {
                 addTilesToStack(getRandomAbstractTile());
             }
@@ -143,7 +143,7 @@ export const TileStack = () => {
                     anchorX="center"
                     anchorY="middle"
                 >
-                    {remaining}s
+                    {Math.ceil(remaining / 2)}s
                 </Text>
                 <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
                     <spriteMaterial map={assets.outline} />
