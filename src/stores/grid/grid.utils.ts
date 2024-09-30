@@ -2,13 +2,11 @@
 
 import { Vector2 } from 'three';
 import { addToScore } from '../game-state/game-state.actions';
+import { addProp } from '../props/props.actions';
+import { PropType, usePropsStore } from '../props/props.store';
 import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
 import { AbstractTile, SelectorTile, Tile } from './grid.tiles';
-
-export const calculateOffsetAmount = (keys: string[]) => (keys.includes('Shift') ? 0.6 : 0.25);
-
-export const sortTilesByZIndex = (a: Tile, b: Tile) => (a.position.y < b.position.y ? 1 : -1);
 
 // Tile Upgrade Actions. By default, we simply replace the tile, but some
 // tiles have special effects when upgrading (switching types, do something else)
@@ -34,10 +32,52 @@ type PatchPattern = [
     AbstractTile,
     AbstractTile,
 ];
+
 export type EffectActionStateMachineEntry = {
     name?: string;
     pattern: RowPattern | CirclePattern | PatchPattern;
-    action: (state: GridStore, tile: Tile, target: AbstractTile) => GridStore;
+    action: (
+        state: GridStore,
+        tile: Tile,
+        target: AbstractTile,
+        neighbors: ReturnType<typeof getNeighbors>,
+    ) => GridStore;
+};
+
+export const getNeighbors = (tile: Tile, tiles: Map<string, Tile>) => {
+    return {
+        vertical: [
+            tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
+            tiles.get(tile.serialId),
+            tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
+        ],
+        horizontal: [
+            tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
+            tiles.get(tile.serialId),
+            tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
+        ],
+        circle: [
+            tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
+            tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
+            tiles.get(tile.serialId),
+            tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
+            tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
+        ],
+        patch: [
+            // top
+            tiles.get(`${tile.position.x}:${tile.position.y + 1}`),
+            tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
+            tiles.get(`${tile.position.x + 2}:${tile.position.y}`),
+            // middle
+            tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
+            tiles.get(tile.serialId),
+            tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
+            // bottom
+            tiles.get(`${tile.position.x - 2}:${tile.position.y}`),
+            tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
+            tiles.get(`${tile.position.x}:${tile.position.y - 1}`),
+        ],
+    };
 };
 
 class UpgradeActions {
@@ -51,7 +91,12 @@ class UpgradeActions {
         // If there are no state machine entries to be found, simply
         // replace the current tile with the new one, swapping them
         if (stateMachineEntries.length === 0) {
-            return [this.swapTiles];
+            return [
+                (state: GridStore, tile: Tile, target: AbstractTile) => {
+                    this.destroyPropsOnTile(tile);
+                    return this.swapTiles(state, tile, target);
+                },
+            ];
         }
 
         return stateMachineEntries.map(({ action }) => action);
@@ -63,6 +108,7 @@ class UpgradeActions {
             to: ['dirt', 'grass', 'soil', 'rocks'],
             action: (state, tile, target) => {
                 this.increaseScore(2);
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -72,6 +118,7 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(5);
                 this.grantNewTiles('shallow_water', 'dirt');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -82,6 +129,7 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(2);
                 this.grantNewTiles('dirt', 'dirt');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -91,16 +139,28 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(2);
                 this.grantNewTiles('soil', 'soil');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
         {
             from: ['grass'],
             to: ['shallow_water'],
-            action: (state, tile, target) => {
+            action: (state, tile) => {
                 this.increaseScore(4);
-                this.grantNewTiles('rocks');
-                return this.swapTiles(state, tile, target);
+                this.grantNewTiles('dirt');
+                this.addPropToTile('flower_01', tile);
+                console.log({ state, tile, props: usePropsStore.getState() });
+                return state;
+            },
+        },
+        {
+            from: ['grass'],
+            to: ['grass'],
+            action: (state, tile) => {
+                this.increaseScore(4);
+                this.addPropToTile('flower_01', tile);
+                return state;
             },
         },
         // Soil
@@ -110,6 +170,7 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(4);
                 this.grantNewTiles('grass');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -120,6 +181,7 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(-2);
                 this.grantNewTiles('shallow_water');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -129,6 +191,7 @@ class UpgradeActions {
             action: (state, tile) => {
                 this.increaseScore(10);
                 this.grantNewTiles('grass');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, 'grass');
             },
         },
@@ -139,6 +202,7 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(-2);
                 this.grantNewTiles('shallow_water');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -148,6 +212,7 @@ class UpgradeActions {
             action: (state, tile, target) => {
                 this.increaseScore(4);
                 this.grantNewTiles('soil', 'soil', 'dirt', 'dirt');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
         },
@@ -157,7 +222,20 @@ class UpgradeActions {
             action: (state, tile) => {
                 this.increaseScore(10);
                 this.grantNewTiles('dirt');
+                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, 'soil');
+            },
+        },
+        // Rocks
+        {
+            from: ['rocks'],
+            to: ['rocks'],
+            action: (state, tile) => {
+                this.increaseScore(2);
+                this.grantNewTiles('dirt');
+                this.addPropToTile('small_rock_01', tile);
+
+                return state;
             },
         },
 
@@ -167,50 +245,30 @@ class UpgradeActions {
             from: ['selector'],
             to: ['dirt', 'grass', 'shallow_water', 'soil', 'rocks'],
             action: (state, tile) => {
+                this.destroyPropsOnTile(tile);
                 return this.addNewSelectorTiles(state, tile);
             },
         },
     ];
 
-    private getNeighbors(tile: Tile, tiles: Map<string, Tile>) {
-        return {
-            vertical: [
-                tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
-                tiles.get(this.getTileId(tile)),
-                tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
-            ].map((tile) => tile?.type ?? null),
-            horizontal: [
-                tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
-                tiles.get(this.getTileId(tile)),
-                tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
-            ].map((tile) => tile?.type ?? null),
-            circle: [
-                tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
-                tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
-                tiles.get(this.getTileId(tile)),
-                tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
-                tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
-            ].map((tile) => tile?.type ?? null),
-            patch: [
-                // top
-                tiles.get(`${tile.position.x}:${tile.position.y + 1}`),
-                tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
-                tiles.get(`${tile.position.x + 2}:${tile.position.y}`),
-                // middle
-                tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
-                tiles.get(this.getTileId(tile)),
-                tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
-                // bottom
-                tiles.get(`${tile.position.x - 2}:${tile.position.y}`),
-                tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
-                tiles.get(`${tile.position.x}:${tile.position.y - 1}`),
-            ].map((tile) => tile?.type ?? null),
-        };
+    private destroyPropsOnTile(tile: Tile) {
+        usePropsStore.setState((state) => {
+            if (!state.props.has(tile.serialId)) {
+                return state;
+            }
+
+            state.props.delete(tile.serialId);
+            return { props: new Map(state.props) };
+        });
+    }
+
+    private addPropToTile(type: PropType, tile: Tile) {
+        addProp(type, tile);
     }
 
     private matchPattern(
         pattern: EffectActionStateMachineEntry['pattern'],
-        neighbors: ReturnType<typeof this.getNeighbors>,
+        neighbors: ReturnType<typeof getNeighbors>,
     ) {
         // Depending on the length of the pattern, we can choose how to look up the different tiles
         switch (pattern.length) {
@@ -218,22 +276,20 @@ class UpgradeActions {
             // This pattern checks the horizontal and vertical nearest neighbors for matches
             case 3:
                 return (
-                    pattern.every((value, idx) => value === neighbors.vertical[idx]) ||
-                    pattern.every((value, idx) => value === neighbors.horizontal[idx])
+                    pattern.every((value, idx) => value === neighbors.vertical[idx]?.type) ||
+                    pattern.every((value, idx) => value === neighbors.horizontal[idx]?.type)
                 );
 
             // Circle Pattern
             case 5:
-                return pattern.every((value, idx) => value === neighbors.circle[idx]);
+                return pattern.every((value, idx) => value === neighbors.circle[idx]?.type);
             // Patch Pattern
             case 9:
-                return pattern.every((value, idx) => value === neighbors.patch[idx]);
+                return pattern.every((value, idx) => value === neighbors.patch[idx]?.type);
         }
     }
 
-    getTileEffectActions(tile: Tile, state: GridStore): EffectActionStateMachineEntry['action'][] {
-        const tiles = state.tiles;
-        const neighbors = this.getNeighbors(tile, tiles);
+    getTileEffectActions(neighbors: ReturnType<typeof getNeighbors>): EffectActionStateMachineEntry['action'][] {
         const effects = this.effects.filter((effect) => this.matchPattern(effect.pattern, neighbors));
         return effects.map(({ action }) => action);
     }
@@ -261,16 +317,27 @@ class UpgradeActions {
         {
             name: 'Fairy Ring',
             pattern: ['soil', 'grass', 'soil', 'grass', 'shallow_water', 'grass', 'soil', 'grass', 'soil'],
-            action: (state, tile) => {
+            action: (state, tile, _, neighbors) => {
                 this.increaseScore(40);
-                this.swapTiles(state, tile, 'grass');
+                neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile('flower_01', tile));
+                this.destroyPropsOnTile(tile);
+                return state;
+            },
+        },
+        {
+            name: 'Dolmen',
+            pattern: ['grass', 'grass', 'grass', 'grass', 'rocks', 'grass', 'grass', 'grass', 'grass'],
+            action: (state, tile, _, neighbors) => {
+                this.increaseScore(40);
+                neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile('flower_01', tile));
+                this.addPropToTile('small_rock_01', tile);
                 return state;
             },
         },
     ];
 
     private swapTiles = (state: GridStore, tile: Tile, next: AbstractTile) => {
-        const tiles = new Map(state.tiles.set(this.getTileId(tile), new Tile(tile.position, next)));
+        const tiles = new Map(state.tiles.set(tile.serialId, new Tile(tile.position, next)));
         return { ...state, tiles };
     };
 
@@ -282,16 +349,8 @@ class UpgradeActions {
         addToScore(amount);
     }
 
-    private getTileId(tile: Tile) {
-        return `${tile.position.x}:${tile.position.y}`;
-    }
-
-    private makeTileId(tile: Tile) {
-        return `${tile.position.x}:${tile.position.y}`;
-    }
-
     private lookup(state: GridStore, tile: Tile) {
-        return state.tiles.has(this.getTileId(tile));
+        return state.tiles.has(tile.serialId);
     }
 
     private addNewSelectorTiles(state: GridStore, tile: Tile): GridStore {
@@ -318,10 +377,10 @@ class UpgradeActions {
         // set. As we're using the serialized position as key, this enables
         // us to quickly look up the tile
 
-        !this.lookup(state, up) && state.tiles.set(this.makeTileId(up), up);
-        !this.lookup(state, down) && state.tiles.set(this.makeTileId(down), down);
-        !this.lookup(state, left) && state.tiles.set(this.makeTileId(left), left);
-        !this.lookup(state, right) && state.tiles.set(this.makeTileId(right), right);
+        !this.lookup(state, up) && state.tiles.set(up.serialId, up);
+        !this.lookup(state, down) && state.tiles.set(down.serialId, down);
+        !this.lookup(state, left) && state.tiles.set(left.serialId, left);
+        !this.lookup(state, right) && state.tiles.set(right.serialId, right);
 
         // Return the updated state
         return { ...state, tiles: new Map(state.tiles) };

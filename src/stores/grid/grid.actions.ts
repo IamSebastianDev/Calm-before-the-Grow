@@ -3,7 +3,7 @@
 import { Vector2 } from 'three';
 import { useGridStore } from './grid.store';
 import { AbstractTile, Tile } from './grid.tiles';
-import { upgradeActions } from './grid.utils';
+import { getNeighbors, upgradeActions } from './grid.utils';
 
 export const upgradeTile = (tile: Tile, type: AbstractTile) => {
     useGridStore.setState((state) => {
@@ -16,8 +16,9 @@ export const upgradeTile = (tile: Tile, type: AbstractTile) => {
         const updated = actions.reduce((cur, acc) => acc(cur, tile, type), state);
 
         // Apply the effect actions
-        const effects = upgradeActions.getTileEffectActions(tile, updated);
-        const effected = effects.reduce((cur, acc) => acc(cur, tile, type), updated);
+        const neighbors = getNeighbors(tile, state.tiles);
+        const effects = upgradeActions.getTileEffectActions(neighbors);
+        const effected = effects.reduce((cur, acc) => acc(cur, tile, type, neighbors), updated);
 
         // Return the processed state
         return effected;

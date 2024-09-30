@@ -2,8 +2,8 @@
 
 import { Vector2 } from 'three';
 import { create } from 'zustand';
+import { sortByYIndex } from '../../functions/sort-by-y-index';
 import { SelectorTile, Tile } from './grid.tiles';
-import { sortTilesByZIndex } from './grid.utils';
 
 export type GridStore = {
     tiles: Map<string, Tile>;
@@ -17,5 +17,5 @@ export const useGridStore = create<GridStore>()(() => ({
 
 export const useOrderedGrid = () => {
     const grid = useGridStore();
-    return { ...grid, tiles: [...grid.tiles.values()].sort(sortTilesByZIndex) };
+    return { ...grid, tiles: [...grid.tiles.values()].sort(sortByYIndex) };
 };

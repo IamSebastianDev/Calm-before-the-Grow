@@ -11,8 +11,12 @@ import tile_024 from '../assets/sprites/tile_024.png';
 // Rocks
 import tile_061 from '../assets/sprites/tile_061.png';
 import tile_063 from '../assets/sprites/tile_063.png';
+// Prop Rocks
+import tile_064 from '../assets/sprites/tile_064.png';
 // Water
 import tile_104 from '../assets/sprites/tile_104.png';
+// Flowers
+import tile_041 from '../assets/sprites/tile_041.png';
 // UI
 import chevron from '../assets/sprites/ui/chevron.png';
 import menu from '../assets/sprites/ui/menu.png';
@@ -35,6 +39,11 @@ export const tiles = {
     rocks_2: tile_063,
 };
 
+export const props = {
+    flower_01: tile_041,
+    small_rock_01: tile_064,
+};
+
 export const textureMatcher: Record<AbstractTile, TileType[]> = {
     dirt: ['dirt_1', 'dirt_2'],
     grass: ['grass_1', 'grass_2', 'grass_3'],
@@ -52,4 +61,4 @@ export const assets = {
 };
 
 export type AssetType = keyof typeof tiles;
-export const { useAssets, AssetProvider } = createAssetProvider({ ...assets, ...tiles });
+export const { useAssets, AssetProvider } = createAssetProvider({ ...assets, ...tiles, ...props });

@@ -3,6 +3,7 @@
 import { Vector2 } from 'three';
 import { useGridStore } from '../grid/grid.store';
 import { SelectorTile } from '../grid/grid.tiles';
+import { usePropsStore } from '../props/props.store';
 import { useStackStore } from '../stack/stack.store';
 import { useGameState } from './game-state.store';
 
@@ -15,9 +16,9 @@ export const startGame = () => {
         tiles: new Map([['0:0', new SelectorTile(new Vector2(0, 0))]]),
         offset: new Vector2(0, 0),
     }));
+    usePropsStore.setState(() => ({ props: new Map() }));
 };
 
 export const addToScore = (amount = 0) => {
-    console.log({ Scored: amount });
     useGameState.setState((state) => ({ score: state.score + amount }));
 };

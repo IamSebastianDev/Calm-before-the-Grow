@@ -25,14 +25,14 @@ export const getRandomAbstractTile = () => {
 export class Tile {
     public id = crypto.randomUUID();
 
+    get serialId() {
+        return `${this.position.x}:${this.position.y}`;
+    }
+
     constructor(
-        protected _position: Vector2,
+        public position: Vector2,
         public type: AbstractTile,
     ) {}
-
-    get position() {
-        return this._position;
-    }
 
     static isAnimatedTile(tile: Tile): tile is AnimatedTile {
         return 'isAnimated' in tile && tile.isAnimated === true;

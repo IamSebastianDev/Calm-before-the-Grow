@@ -11,24 +11,29 @@ export type StaticSpriteProps = MeshProps & {
     position: Vector3;
 };
 
-export const StaticSprite = ({ tile, position: finalPosition, ...props }: StaticSpriteProps) => {
+export const StaticSprite = ({ tile, position: targetPosition, ...props }: StaticSpriteProps) => {
     // Get the texture of the the Tile
     const texture = useMatchAbstractToTexture(tile.type);
 
     // Deconstruct the final position
-    const { x, y, z } = finalPosition!;
+    const { x, y, z } = targetPosition!;
 
     // Define the spring animation
-    const { position } = useSpring({
-        from: { position: [x, y - 0.25, z] }, // Start position slightly below the final Y position
+    const { position } = useSpring<{ position: Position }>({
+        from: { position: [x, y - 0.55, z] }, // Start position slightly below the final Y position
         to: { position: [x, y, z] }, // Final position from props
-        config: { tension: 200, friction: 15 }, // Adjust animation config
+        config: { tension: 120, friction: 15 }, // Adjust animation config
+    });
+
+    const { opacity } = useSpring({
+        from: { opacity: 0 },
+        to: { opacity: 1 },
     });
 
     return (
         <animated.mesh {...props} position={position as unknown as [x: number, y: number, z: number]} scale={1.85}>
             <planeGeometry />
-            <meshStandardMaterial transparent map={texture} />
+            <animated.meshStandardMaterial transparent map={texture} opacity={opacity} />
         </animated.mesh>
     );
 };
