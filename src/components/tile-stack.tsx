@@ -13,14 +13,14 @@ import { addTilesToStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
 // Child component for rendering each tile with its animation
-type AnimatedTileProps = { idx: number; type: AbstractTile };
-const AnimatedTile = ({ idx, type }: AnimatedTileProps) => {
+type AnimatedTileProps = { idx: number; type: AbstractTile; top: boolean };
+const AnimatedTile = ({ idx, type, top }: AnimatedTileProps) => {
     const [isHighlighted, setIsHighlighted] = useState(false);
     const texture = useMatchAbstractToTexture(type);
 
     // Use spring to animate the position of each tile
     const { position } = useSpring({
-        position: isHighlighted ? [0.15, idx * 0.5, idx] : [0, idx * 0.5, idx + 1],
+        position: isHighlighted ? [top ? 0.35 : 0.15, idx * 0.5, idx] : [top ? 0.25 : 0, idx * 0.5, idx + 1],
         config: { tension: 170, friction: 26 },
     });
 
@@ -91,7 +91,7 @@ export const TileStack = () => {
         <group ref={ref}>
             {/* Tiles */}
             {currentTiles.map((tile, idx) => (
-                <AnimatedTile key={idx} type={tile} idx={idx}></AnimatedTile>
+                <AnimatedTile key={idx} type={tile} idx={idx} top={idx === currentTiles.length - 1} />
             ))}
             {/* Next indicator */}
             {currentTiles.length > 0 && (
