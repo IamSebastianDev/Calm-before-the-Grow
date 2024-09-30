@@ -9,11 +9,9 @@ import { useControllerAction } from '../core/controller';
 import { ThreeEvent } from '@react-three/fiber';
 import { Overlay } from '../components/overlay';
 import { TileStack } from '../components/tile-stack';
-import { Scene, useScene } from '../core/scene-manager';
+import { Scene } from '../core/scene-manager';
 import { useDevice } from '../hooks/use-device';
-import { useAssets } from '../providers/asset.provider';
 import { useController } from '../providers/controller.provider';
-import { useGameState } from '../stores/game-state/game-state.store';
 import {
     moveGridOffsetDown,
     moveGridOffsetLeft,
@@ -37,10 +35,7 @@ const sortTilesByProximity =
     };
 
 export const Main: Scene = () => {
-    const sceneManager = useScene();
-    const assets = useAssets();
     const grid = useOrderedGrid();
-    const game = useGameState();
     const stack = useStackStore();
     const device = useDevice();
 
@@ -50,8 +45,6 @@ export const Main: Scene = () => {
     useControllerAction(controller, 'PAN_RIGHT', (_, keys) => moveGridOffsetRight(calculateOffsetAmount(keys)));
     useControllerAction(controller, 'PAN_DOWN', (_, keys) => moveGridOffsetDown(calculateOffsetAmount(keys)));
     useControllerAction(controller, 'PAN_UP', (_, keys) => moveGridOffsetUp(calculateOffsetAmount(keys)));
-
-    console.log({ game, sceneManager, assets, controller, grid, device });
 
     const handleTileClicked = (event: ThreeEvent<PointerEvent>) => {
         event.stopPropagation();

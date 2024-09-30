@@ -1,7 +1,7 @@
 /** @format */
 
 import { Vector2 } from 'three';
-import { useGameState } from '../game-state/game-state.store';
+import { addToScore } from '../game-state/game-state.actions';
 import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
 import { AbstractTile, SelectorTile, Tile } from './grid.tiles';
@@ -18,6 +18,25 @@ export const sortTilesByZIndex = (a: Tile, b: Tile) => (a.position.y < b.positio
 export type UpgradeActionStateMachineEntry = {
     from: Array<AbstractTile>;
     to: Array<AbstractTile>;
+    action: (state: GridStore, tile: Tile, target: AbstractTile) => GridStore;
+};
+
+type RowPattern = [AbstractTile, AbstractTile, AbstractTile];
+type CirclePattern = [AbstractTile, AbstractTile, AbstractTile, AbstractTile, AbstractTile];
+type PatchPattern = [
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+    AbstractTile,
+];
+export type EffectActionStateMachineEntry = {
+    name?: string;
+    pattern: RowPattern | CirclePattern | PatchPattern;
     action: (state: GridStore, tile: Tile, target: AbstractTile) => GridStore;
 };
 
@@ -153,6 +172,103 @@ class UpgradeActions {
         },
     ];
 
+    private getNeighbors(tile: Tile, tiles: Map<string, Tile>) {
+        return {
+            vertical: [
+                tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
+                tiles.get(this.getTileId(tile)),
+                tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
+            ].map((tile) => tile?.type ?? null),
+            horizontal: [
+                tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
+                tiles.get(this.getTileId(tile)),
+                tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
+            ].map((tile) => tile?.type ?? null),
+            circle: [
+                tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
+                tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
+                tiles.get(this.getTileId(tile)),
+                tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
+                tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
+            ].map((tile) => tile?.type ?? null),
+            patch: [
+                // top
+                tiles.get(`${tile.position.x}:${tile.position.y + 1}`),
+                tiles.get(`${tile.position.x + 1}:${tile.position.y + 0.5}`),
+                tiles.get(`${tile.position.x + 2}:${tile.position.y}`),
+                // middle
+                tiles.get(`${tile.position.x - 1}:${tile.position.y + 0.5}`),
+                tiles.get(this.getTileId(tile)),
+                tiles.get(`${tile.position.x + 1}:${tile.position.y - 0.5}`),
+                // bottom
+                tiles.get(`${tile.position.x - 2}:${tile.position.y}`),
+                tiles.get(`${tile.position.x - 1}:${tile.position.y - 0.5}`),
+                tiles.get(`${tile.position.x}:${tile.position.y - 1}`),
+            ].map((tile) => tile?.type ?? null),
+        };
+    }
+
+    private matchPattern(
+        pattern: EffectActionStateMachineEntry['pattern'],
+        neighbors: ReturnType<typeof this.getNeighbors>,
+    ) {
+        // Depending on the length of the pattern, we can choose how to look up the different tiles
+        switch (pattern.length) {
+            // Row Pattern
+            // This pattern checks the horizontal and vertical nearest neighbors for matches
+            case 3:
+                return (
+                    pattern.every((value, idx) => value === neighbors.vertical[idx]) ||
+                    pattern.every((value, idx) => value === neighbors.horizontal[idx])
+                );
+
+            // Circle Pattern
+            case 5:
+                return pattern.every((value, idx) => value === neighbors.circle[idx]);
+            // Patch Pattern
+            case 9:
+                return pattern.every((value, idx) => value === neighbors.patch[idx]);
+        }
+    }
+
+    getTileEffectActions(tile: Tile, state: GridStore): EffectActionStateMachineEntry['action'][] {
+        const tiles = state.tiles;
+        const neighbors = this.getNeighbors(tile, tiles);
+        const effects = this.effects.filter((effect) => this.matchPattern(effect.pattern, neighbors));
+        return effects.map(({ action }) => action);
+    }
+
+    private effects: Array<EffectActionStateMachineEntry> = [
+        {
+            name: 'Lawn',
+            pattern: ['grass', 'grass', 'grass'],
+            action: (state) => {
+                this.increaseScore(15);
+                this.grantNewTiles('soil', 'soil', 'soil');
+                return state;
+            },
+        },
+        {
+            name: 'Bountiful Soil',
+            pattern: ['soil', 'soil', 'soil', 'soil', 'soil'],
+            action: (state, tile) => {
+                this.increaseScore(25);
+                this.grantNewTiles('grass', 'grass', 'grass');
+                this.swapTiles(state, tile, 'grass');
+                return state;
+            },
+        },
+        {
+            name: 'Fairy Ring',
+            pattern: ['soil', 'grass', 'soil', 'grass', 'shallow_water', 'grass', 'soil', 'grass', 'soil'],
+            action: (state, tile) => {
+                this.increaseScore(40);
+                this.swapTiles(state, tile, 'grass');
+                return state;
+            },
+        },
+    ];
+
     private swapTiles = (state: GridStore, tile: Tile, next: AbstractTile) => {
         const tiles = new Map(state.tiles.set(this.getTileId(tile), new Tile(tile.position, next)));
         return { ...state, tiles };
@@ -163,7 +279,7 @@ class UpgradeActions {
     }
 
     private increaseScore(amount = 1) {
-        useGameState.setState((state) => ({ score: state.score + amount }));
+        addToScore(amount);
     }
 
     private getTileId(tile: Tile) {

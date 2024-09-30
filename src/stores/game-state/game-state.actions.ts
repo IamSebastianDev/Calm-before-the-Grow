@@ -16,3 +16,8 @@ export const startGame = () => {
         offset: new Vector2(0, 0),
     }));
 };
+
+export const addToScore = (amount = 0) => {
+    console.log({ Scored: amount });
+    useGameState.setState((state) => ({ score: state.score + amount }));
+};

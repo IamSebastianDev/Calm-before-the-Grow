@@ -4,18 +4,10 @@ import { Html } from '@react-three/drei';
 import { Lights } from '../components/lights';
 
 import { Scene, useScene } from '../core/scene-manager';
-import { useAssets } from '../providers/asset.provider';
 import { startGame } from '../stores/game-state/game-state.actions';
-import { useGameState } from '../stores/game-state/game-state.store';
-import { useOrderedGrid } from '../stores/grid/grid.store';
 
 export const Menu: Scene = () => {
     const sceneManager = useScene();
-    const assets = useAssets();
-    const grid = useOrderedGrid();
-    const game = useGameState();
-
-    console.log({ game, sceneManager, assets, grid });
 
     const handleStartGameClick = () => {
         startGame();
