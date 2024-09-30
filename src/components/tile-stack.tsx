@@ -1,6 +1,6 @@
 /** @format */
 
-import { animated, useSpring } from '@react-spring/three';
+import { animated, config, useSpring } from '@react-spring/three';
 import { Text } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
@@ -11,6 +11,43 @@ import { useAssets } from '../providers/asset.provider';
 import { AbstractTile, getRandomAbstractTile } from '../stores/grid/grid.tiles';
 import { addTilesToStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
+
+// Child component for rendering the tile number
+type TileCountProps = { position: Vector3; count: number };
+const TileCount = ({ position, count }: TileCountProps) => {
+    const assets = useAssets();
+    const { scale } = useSpring<{ scale: number }>({
+        config: config.wobbly,
+        from: { scale: 0.55 },
+        to: { scale: 0.75 },
+    });
+
+    const ref = useRef<number>();
+    useEffect(() => {
+        if (ref.current !== count) {
+            ref.current = count;
+            scale.reset();
+        }
+    }, [count]);
+
+    return (
+        <animated.group position={position} scale={scale}>
+            <Text
+                fontSize={0.4}
+                font={'/fonts/monogram.ttf'}
+                color="white"
+                textAlign="center"
+                anchorX="center"
+                anchorY="middle"
+            >
+                {count}
+            </Text>
+            <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
+                <spriteMaterial map={assets.outline} />
+            </sprite>
+        </animated.group>
+    );
+};
 
 // Child component for rendering each tile with its animation
 type AnimatedTileProps = { idx: number; type: AbstractTile; top: boolean };
@@ -113,21 +150,7 @@ export const TileStack = () => {
                 </sprite>
             </group>
             {/* Number of available tiles */}
-            <group position={new Vector3(1, 0.7, 1)} scale={0.75}>
-                <Text
-                    fontSize={0.4}
-                    font={'/fonts/monogram.ttf'}
-                    color="white"
-                    textAlign="center"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    {tiles.length}
-                </Text>
-                <sprite scale={0.75} position={new Vector3(-0.01, -0.01, 0)}>
-                    <spriteMaterial map={assets.outline} />
-                </sprite>
-            </group>
+            <TileCount position={new Vector3(1, 0.7, 1)} count={tiles.length} />
             {/* Next indicator */}
             {currentTiles.length > 3 && (
                 <group position={new Vector3(1.25, Math.max(currentTiles.length * 0.5 - 0.5, 1.4), 5)} scale={0.75}>
