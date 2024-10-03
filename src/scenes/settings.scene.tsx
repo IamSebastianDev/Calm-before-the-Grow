@@ -12,8 +12,11 @@ export const Settings: Scene = () => {
         <>
             <Lights />
             <Html center={true}>
-                <div className="container main-menu">
-                    <div className="ui-heading">Settings</div>
+                <div className="container settings-menu">
+                    <div className="settings-title">
+                        <button onPointerDown={() => sceneManager.next('menu')}>▹</button>
+                        <div className="ui-heading">Settings</div>
+                    </div>
                 </div>
             </Html>
         </>

@@ -275,3 +275,22 @@ mark {
     padding-inline: 4px;
     background: rgba(112, 225, 122, 0.3);
 }
+
+/* Settings */
+
+.settings-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-title {
+    display: flex;
+    gap: 1rem;
+}
+
+.settings-title > button {
+    font-size: 2rem;
+    rotate: 180deg;
+}
