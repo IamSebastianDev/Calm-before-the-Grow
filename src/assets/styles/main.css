@@ -117,6 +117,14 @@
     transform-origin: bottom right;
 }
 
+.mobile-controller > button {
+    width: 2.5rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 100%;
+    border: 1px solid white;
+    padding-bottom: 4px;
+}
+
 .mobile-controller img {
     width: 48px;
     height: 48px;
@@ -171,11 +179,10 @@
 }
 
 .reset-to-center {
-    font-size: 2rem;
-    gap: 1.25rem;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    padding-inline: 2rem;
+    font-size: 1.6rem;
+    margin: 0.7rem;
+    padding-block: 0.5rem;
+    padding-inline: 4rem;
     align-self: center;
     border-block: 1px solid white;
     background: rgba(0, 0, 0, 0.5);
@@ -184,27 +191,6 @@
     transition: opacity 0.5s ease-in-out;
     filter: brightness(0.7);
     position: relative;
-}
-
-.reset-to-center:before {
-    content: '';
-    position: absolute;
-    width: 29.5px;
-    aspect-ratio: 1 / 1;
-    rotate: 45deg;
-    left: -15.75px;
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
-}
-.reset-to-center:after {
-    content: '';
-    position: absolute;
-    width: 29.5px;
-    aspect-ratio: 1 / 1;
-    rotate: 225deg;
-    right: -15.75px;
-    border-left: 1px solid white;
-    border-bottom: 1px solid white;
 }
 
 .reset-to-center.hidden {

@@ -12,7 +12,6 @@ import {
     moveGridOffsetLeft,
     moveGridOffsetRight,
     moveGridOffsetUp,
-    resetGridOffset,
 } from '../stores/grid/grid.actions';
 import { useGridStore } from '../stores/grid/grid.store';
 import { RotateDevice } from './rotate-device';
@@ -32,8 +31,6 @@ export const Overlay = () => {
     useControllerAction(controller, 'PAN_DOWN', (_, keys) => moveGridOffsetDown(calculateOffsetAmount(keys)));
     useControllerAction(controller, 'PAN_UP', (_, keys) => moveGridOffsetUp(calculateOffsetAmount(keys)));
 
-    const isOffset = Math.max(grid.offset.x, grid.offset.y) > 5 || Math.min(grid.offset.x, grid.offset.y) < -5;
-
     return (
         <Html center={true}>
             <div className="container overlay">
@@ -41,18 +38,9 @@ export const Overlay = () => {
                 {/* Menu Buttons */}
                 <ScoreRow assets={assets} onMenuClick={() => scene.next('menu')} />
                 {/* Mobile Controller */}
-                {device.isMobile && device.isLandscape && <TouchControls assets={assets} />}
+                {device.isMobile && device.isLandscape && <TouchControls />}
                 {/* Turn device hint */}
                 {device.isMobile && <RotateDevice assets={assets} isLandscape={device.isLandscape} />}
-                {/* Reset offset button */}
-                {device.isLandscape && (
-                    <button
-                        className={`reset-to-center ${!isOffset ? 'hidden' : ''}`}
-                        onPointerDown={() => resetGridOffset()}
-                    >
-                        Return to ORIGIN
-                    </button>
-                )}
             </div>
         </Html>
     );
