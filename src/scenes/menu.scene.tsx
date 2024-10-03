@@ -5,13 +5,24 @@ import { Lights } from '../components/lights';
 
 import { Scene, useScene } from '../core/scene-manager';
 import { startGame } from '../stores/game-state/game-state.actions';
+import { useGameState } from '../stores/game-state/game-state.store';
 
 export const Menu: Scene = () => {
     const sceneManager = useScene();
+    const started = useGameState((state) => state.started);
 
     const handleStartGameClick = () => {
         startGame();
         sceneManager.next('main');
+    };
+
+    const handleResumeGameClick = () => {
+        if (!started) return;
+        sceneManager.next('main');
+    };
+
+    const handleSettingsClick = () => {
+        sceneManager.next('settings');
     };
 
     return (
@@ -24,10 +35,12 @@ export const Menu: Scene = () => {
                         <button className="ui-button" onPointerDown={() => handleStartGameClick()}>
                             Start new Game
                         </button>
-                        <button disabled className="ui-button" onPointerDown={() => handleStartGameClick()}>
-                            Continue Game
+                        <button disabled={!started} className="ui-button" onPointerDown={() => handleResumeGameClick()}>
+                            Resume Game
                         </button>
-                        <button className="ui-button">Options</button>
+                        <button className="ui-button" onPointerDown={() => handleSettingsClick()}>
+                            Settings
+                        </button>
                     </div>
                 </div>
             </Html>

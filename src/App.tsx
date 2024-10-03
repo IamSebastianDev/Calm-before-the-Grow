@@ -9,6 +9,7 @@ import { AssetProvider } from './providers/asset.provider';
 import { ControllerProvider } from './providers/controller.provider';
 import { Main } from './scenes/main.scene';
 import { Menu } from './scenes/menu.scene';
+import { Settings } from './scenes/settings.scene';
 import { startClock, stopClock } from './stores/game-state/game-state.actions';
 
 export const App = () => {
@@ -26,6 +27,7 @@ export const App = () => {
                         <SceneManager>
                             <Menu id="menu" />
                             <Main id="main" />
+                            <Settings id="settings" />
                         </SceneManager>
                     </AssetProvider>
                 </AssetLoader>

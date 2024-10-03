@@ -10,7 +10,7 @@ import { useStackStore } from '../stack/stack.store';
 import { useGameState } from './game-state.store';
 
 export const startGame = () => {
-    useGameState.setState(() => ({ score: 0 }));
+    useGameState.setState(() => ({ score: 0, started: true }));
     useStackStore.setState(() => ({
         tiles: ['dirt'],
     }));
