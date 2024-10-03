@@ -32,7 +32,7 @@ export class FlowerQuest extends Quest {
         addTilesToStack('rocks', 'rocks');
     };
 
-    calculateProgress(state: GridStore, props: PropsStore): QuestProgress[] {
+    calculateProgress(_: GridStore, props: PropsStore): QuestProgress[] {
         const flowers = [...props.props.values()].filter((prop) => prop.type.startsWith('flower'));
 
         if (flowers.length >= 2) {
