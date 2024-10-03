@@ -15,6 +15,7 @@ import { useDevice } from '../hooks/use-device';
 import { upgradeTile } from '../stores/grid/grid.actions';
 import { useOrderedGrid } from '../stores/grid/grid.store';
 import { usePropList } from '../stores/props/props.store';
+import { useQuestStore } from '../stores/quests/quests.store';
 import { takeTileFromStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
@@ -23,6 +24,8 @@ export const Main: Scene = () => {
     const props = usePropList();
     const stack = useStackStore();
     const device = useDevice();
+    const quests = useQuestStore();
+    console.log({ quests });
 
     const handleTileClicked = (event: ThreeEvent<PointerEvent>) => {
         event.stopPropagation();

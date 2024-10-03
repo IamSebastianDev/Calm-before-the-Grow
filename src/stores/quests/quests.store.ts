@@ -1,10 +1,15 @@
 /** @format */
 
-import { GridStore } from '../grid/grid.store';
+import { create } from 'zustand';
+import { Quest } from './quest';
+import { InitialQuest } from './quests/initial.quest';
 
-export type Quest = {
-    text: string;
-    condition: (state: GridStore) => { fulfilled: boolean; progress: string };
-    reward: (state: GridStore) => GridStore;
-    fulfilled: boolean;
+export type QuestStore = {
+    current: Quest;
+    fulfilled: Quest[];
 };
+
+export const useQuestStore = create<QuestStore>()(() => ({
+    current: new InitialQuest(),
+    fulfilled: [],
+}));

@@ -1,6 +1,7 @@
 /** @format */
 
 import { Vector2 } from 'three';
+import { checkForQuestProgress } from '../quests/quests.action';
 import { useGridStore } from './grid.store';
 import { AbstractTile, Tile } from './grid.tiles';
 import { getNeighbors, upgradeActions } from './grid.utils';
@@ -23,6 +24,8 @@ export const upgradeTile = (tile: Tile, type: AbstractTile) => {
         // Return the processed state
         return effected;
     });
+
+    checkForQuestProgress();
 };
 
 // Actions that move the grid somewhere

@@ -16,7 +16,7 @@ export const TouchControls = () => {
     return (
         <>
             <button className={`reset-to-center ${!isOffset ? 'hidden' : ''}`} onPointerDown={() => resetGridOffset()}>
-                Return to ORIGIN
+                Return to Origin
             </button>
             <div className="mobile-controller">
                 <button className="up" onClick={() => moveGridOffsetUp(0.5)}>

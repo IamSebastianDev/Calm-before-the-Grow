@@ -189,11 +189,89 @@
     opacity: 1;
     pointer-events: all;
     transition: opacity 0.5s ease-in-out;
-    filter: brightness(0.7);
-    position: relative;
+    filter: brightness(0.5);
+    position: absolute;
+    bottom: 0;
 }
 
 .reset-to-center.hidden {
     opacity: 0;
     pointer-events: none;
+}
+
+/* Overlay */
+
+.quest-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: min(35vw, 350px);
+    width: 100%;
+    margin: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    filter: brightness(0.7);
+}
+
+.quest-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.quest-entry .quest-title {
+    border: 1px solid white;
+    font-size: 1.4rem;
+    text-shadow: 0px 0px 1px white;
+    padding-top: 0.75rem;
+    padding-bottom: 1rem;
+    padding-inline: 0.5rem;
+    line-height: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.quest-title .show-quest-content-btn {
+    padding-top: 0.4rem;
+    line-height: 0;
+}
+
+.quest-entry .quest-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    border: 1px solid white;
+    font-size: 1.05rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: justify;
+}
+
+.quest-content .quest-list {
+    padding: 0;
+    padding-block: 0.25rem;
+    margin: 0;
+    margin-inline: 1rem;
+}
+
+.quest-content .quest-goal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.quest-content .quest-tip {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+mark {
+    text-transform: uppercase;
+    text-shadow: 0px 0px 1px white;
+    color: white;
+    background: none;
+    padding-inline: 4px;
+    background: rgba(112, 225, 122, 0.3);
 }

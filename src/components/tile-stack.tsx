@@ -124,7 +124,7 @@ export const TileStack = () => {
         }
     });
 
-    const currentTiles = tiles.slice(-9);
+    const currentTiles = tiles.slice(-6);
 
     return (
         <group ref={ref}>

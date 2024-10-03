@@ -13,6 +13,7 @@ import {
     moveGridOffsetRight,
     moveGridOffsetUp,
 } from '../stores/grid/grid.actions';
+import { QuestDisplay } from './quest-display';
 import { RotateDevice } from './rotate-device';
 import { ScoreRow } from './score-row';
 import { TouchControls } from './touch-controls';
@@ -35,6 +36,8 @@ export const Overlay = () => {
                 <div className="overlay-fade-in fades-in"></div>
                 {/* Menu Buttons */}
                 <ScoreRow assets={assets} onMenuClick={() => scene.next('menu')} />
+                {/* Quest */}
+                <QuestDisplay />
                 {/* Mobile Controller */}
                 {device.isMobile && device.isLandscape && <TouchControls />}
                 {/* Turn device hint */}
