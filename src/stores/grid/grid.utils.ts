@@ -18,6 +18,7 @@ export type UpgradeActionStateMachineEntry = {
     to: Array<AbstractTile>;
     action: (state: GridStore, tile: Tile, target: AbstractTile) => GridStore;
     hint?: string;
+    score?: number;
 };
 
 type RowPattern = [AbstractTile, AbstractTile, AbstractTile];
@@ -84,7 +85,11 @@ export const getNeighbors = (tile: Tile, tiles: Map<string, Tile>) => {
 class UpgradeActions {
     // The primary state machine accessor, returns all matching actions
     // defined in the state machine
-    getTileUpgradeAction(current: AbstractTile, next: AbstractTile): UpgradeActionStateMachineEntry[] {
+    getTileUpgradeAction(current: AbstractTile, next?: AbstractTile): UpgradeActionStateMachineEntry[] {
+        if (!next) {
+            return [];
+        }
+
         const stateMachineEntries = this.actions.filter(({ from, to }) => {
             return from.includes(current) && to.includes(next);
         });
@@ -126,17 +131,20 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            score: 7,
+            hint: '+5, +2 ◇',
         },
         // Grass
         {
             from: ['grass'],
             to: ['soil'],
             action: (state, tile, target) => {
-                this.increaseScore(2);
                 this.grantNewTiles('dirt', 'dirt');
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            score: 2,
+            hint: '+0, +2 ◇',
         },
         {
             from: ['grass'],
@@ -147,6 +155,8 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            score: 4,
+            hint: '+2, +2 ◇',
         },
         {
             from: ['grass'],
@@ -158,6 +168,8 @@ class UpgradeActions {
                 console.log({ state, tile, props: usePropsStore.getState() });
                 return state;
             },
+            score: 5,
+            hint: '+4, +1 ◇',
         },
         {
             from: ['grass'],
@@ -167,6 +179,8 @@ class UpgradeActions {
                 this.addPropToTile(getRandomFlower(), tile);
                 return state;
             },
+            score: 4,
+            hint: '+4',
         },
         // Soil
         {
@@ -178,7 +192,8 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
-            hint: '+4',
+            score: 5,
+            hint: '+4, +1 ◇',
         },
 
         {
@@ -190,18 +205,20 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
-            hint: '-2',
+            score: -1,
+            hint: '-2, +1 ◇',
         },
         {
             from: ['soil'],
             to: ['shallow_water'],
             action: (state, tile) => {
-                this.increaseScore(10);
+                this.increaseScore(5);
                 this.grantNewTiles('grass');
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, 'grass');
             },
-            hint: '+10',
+            score: 6,
+            hint: '+5, +1 ◇',
         },
         // Dirt
         {
@@ -213,6 +230,8 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            score: 1,
+            hint: '-2, +1 ◇',
         },
         {
             from: ['dirt'],
@@ -223,17 +242,20 @@ class UpgradeActions {
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
+            score: 8,
+            hint: '+4, +4 ◇',
         },
         {
             from: ['dirt'],
             to: ['shallow_water'],
             action: (state, tile) => {
-                this.increaseScore(10);
+                this.increaseScore(4);
                 this.grantNewTiles('dirt');
                 this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, 'soil');
             },
-            hint: '+10',
+            score: 5,
+            hint: '+4, +1 ◇',
         },
         // Rocks
         {
@@ -246,6 +268,20 @@ class UpgradeActions {
 
                 return state;
             },
+            score: 3,
+            hint: '+2, +1 ◇',
+        },
+        {
+            from: ['rocks'],
+            to: ['shallow_water'],
+            action: (state) => {
+                this.increaseScore(1);
+                this.grantNewTiles('rocks');
+
+                return state;
+            },
+            score: 3,
+            hint: '+1, +1 ◇',
         },
 
         // This action is executed whenever a selector tile is upgraded, and new

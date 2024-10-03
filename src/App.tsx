@@ -9,12 +9,12 @@ import { AssetProvider } from './providers/asset.provider';
 import { ControllerProvider } from './providers/controller.provider';
 import { Main } from './scenes/main.scene';
 import { Menu } from './scenes/menu.scene';
-import { startClock, stopClock } from './stores/game-state/game-state.actions';
+import { stopClock } from './stores/game-state/game-state.actions';
 
 export const App = () => {
     // Start the atomic application clock
     useEffect(() => {
-        startClock();
+        // startClock();
         return () => stopClock();
     });
 

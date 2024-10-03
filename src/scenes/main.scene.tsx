@@ -10,22 +10,13 @@ import { Overlay } from '../components/overlay';
 import { PropRenderer } from '../components/prop-renderer';
 import { TileStack } from '../components/tile-stack';
 import { Scene } from '../core/scene-manager';
+import { sortTilesByProximity } from '../functions/sort-by-proximity';
 import { useDevice } from '../hooks/use-device';
 import { upgradeTile } from '../stores/grid/grid.actions';
 import { useOrderedGrid } from '../stores/grid/grid.store';
-import { Tile } from '../stores/grid/grid.tiles';
 import { usePropList } from '../stores/props/props.store';
 import { takeTileFromStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
-
-const sortTilesByProximity =
-    ({ point }: ThreeEvent<PointerEvent>, offset: Vector2) =>
-    (a: Tile, b: Tile) => {
-        const point2d = new Vector2(point.x, point.y);
-        const aOffset2d = new Vector2(a.position.x + offset.x, a.position.y + offset.y);
-        const bOffset2d = new Vector2(b.position.x + offset.x, b.position.y + offset.y);
-        return aOffset2d.distanceTo(point2d) > bOffset2d.distanceTo(point2d) ? 1 : -1;
-    };
 
 export const Main: Scene = () => {
     const grid = useOrderedGrid();
@@ -53,7 +44,6 @@ export const Main: Scene = () => {
             <Overlay />
             <Lights />
             {device.isLandscape && <TileStack />}
-
             {/* Grid tiles */}
             <group position={new Vector3(0, 0, 0)} onPointerDown={(ev) => handleTileClicked(ev)}>
                 {grid.tiles.map((tile, idx) => (

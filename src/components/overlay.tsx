@@ -13,7 +13,6 @@ import {
     moveGridOffsetRight,
     moveGridOffsetUp,
 } from '../stores/grid/grid.actions';
-import { useGridStore } from '../stores/grid/grid.store';
 import { RotateDevice } from './rotate-device';
 import { ScoreRow } from './score-row';
 import { TouchControls } from './touch-controls';
@@ -22,7 +21,6 @@ export const Overlay = () => {
     const device = useDevice();
     const assets = useAssets();
     const scene = useScene();
-    const grid = useGridStore();
 
     // Set up basic controls for panning around
     const controller = useController();
