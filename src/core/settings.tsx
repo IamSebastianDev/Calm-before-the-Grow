@@ -1,7 +1,7 @@
 /** @format */
 
-import { createContext, PropsWithChildren, useContext } from 'react';
-import { useDevice } from '../hooks/use-device';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { useIsFullscreen } from '../hooks/use-is-fullscreen';
 
 type SettingsProvider = {
     isMuted: boolean;
@@ -12,10 +12,11 @@ type SettingsProvider = {
 
 const SettingsCtx = createContext<SettingsProvider | null>(null);
 export const SettingsProvider = ({ children }: PropsWithChildren) => {
-    const { isFullscreen, isMuted, requestFullscreen, requestMute } = useDevice();
+    const { isFullscreen, requestFullscreen } = useIsFullscreen();
+    const [isMuted, setMuted] = useState(false);
 
     return (
-        <SettingsCtx.Provider value={{ isFullscreen, isMuted, requestFullscreen, setMuted: requestMute }}>
+        <SettingsCtx.Provider value={{ isFullscreen, isMuted, requestFullscreen, setMuted }}>
             {children}
         </SettingsCtx.Provider>
     );

@@ -48,6 +48,7 @@ export const Main: Scene = () => {
             return;
         }
 
+        audio.trigger('plop');
         upgradeTile(tile, next);
         takeTileFromStack();
     };

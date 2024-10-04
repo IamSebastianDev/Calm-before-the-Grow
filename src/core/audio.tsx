@@ -89,13 +89,12 @@ export class AudioController<T extends Record<string, HTMLAudioElement>> {
     }
 
     async trigger(key: keyof T) {
-        if (this.currentSource) {
-            this.stop(this.currentSource);
+        if (this.muted) {
+            return;
         }
 
         return new Promise<void>((resolve) => {
-            this.currentSource = key;
-            const audio = this.files[this.currentSource];
+            const audio = this.files[key];
             audio.currentTime = 0;
             audio.muted = this.muted;
             audio.play();
