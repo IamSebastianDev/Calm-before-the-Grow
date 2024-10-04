@@ -25,6 +25,10 @@ export const Menu: Scene = () => {
         sceneManager.next('settings');
     };
 
+    const handleHowtoClick = () => {
+        sceneManager.next('howto');
+    };
+
     return (
         <>
             <Lights />
@@ -37,6 +41,9 @@ export const Menu: Scene = () => {
                         </button>
                         <button disabled={!started} className="ui-button" onPointerDown={() => handleResumeGameClick()}>
                             Resume Game
+                        </button>
+                        <button className="ui-button" onPointerDown={() => handleHowtoClick()}>
+                            How to Play
                         </button>
                         <button className="ui-button" onPointerDown={() => handleSettingsClick()}>
                             Settings

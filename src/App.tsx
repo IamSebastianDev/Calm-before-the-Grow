@@ -9,6 +9,7 @@ import { SettingsProvider } from './core/settings';
 import { AssetProvider } from './providers/asset.provider';
 import { AudioProvider } from './providers/audio.provider';
 import { ControllerProvider } from './providers/controller.provider';
+import { HowTo } from './scenes/howto.scene';
 import { Main } from './scenes/main.scene';
 import { Menu } from './scenes/menu.scene';
 import { Settings } from './scenes/settings.scene';
@@ -32,6 +33,7 @@ export const App = () => {
                                     <Menu id="menu" />
                                     <Main id="main" />
                                     <Settings id="settings" />
+                                    <HowTo id="howto" />
                                 </SceneManager>
                             </AudioProvider>
                         </AssetProvider>

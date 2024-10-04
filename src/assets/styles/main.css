@@ -131,6 +131,12 @@ input[type='checkbox']:checked::before {
     pointer-events: none;
 }
 
+.overlay-button img {
+    width: 24px;
+    aspect-ratio: 1;
+    object-fit: contain;
+}
+
 /* Main Menu */
 
 .main-menu {

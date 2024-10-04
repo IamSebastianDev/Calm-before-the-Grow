@@ -35,7 +35,11 @@ export const Overlay = () => {
             <div className="container overlay">
                 <div className="overlay-fade-in fades-in"></div>
                 {/* Menu Buttons */}
-                <ScoreRow assets={assets} onMenuClick={() => scene.next('menu')} />
+                <ScoreRow
+                    assets={assets}
+                    onMenuClick={() => scene.next('menu')}
+                    onHelpClick={() => scene.next('howto')}
+                />
                 {/* Quest */}
                 <QuestDisplay />
                 {/* Mobile Controller */}

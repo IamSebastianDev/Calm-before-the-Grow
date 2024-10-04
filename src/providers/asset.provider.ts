@@ -23,6 +23,7 @@ import tile_044 from '../assets/sprites/tile_044.png';
 import chevron from '../assets/sprites/ui/chevron.png';
 import menu from '../assets/sprites/ui/menu.png';
 import outline from '../assets/sprites/ui/outline.png';
+import question from '../assets/sprites/ui/question.png';
 import rotate from '../assets/sprites/ui/rotate.png';
 import selector from '../assets/sprites/ui/selector.png';
 import { createAssetProvider } from '../core/asset-loader';
@@ -62,6 +63,7 @@ export const assets = {
     outline,
     chevron,
     rotate,
+    question,
 };
 
 export type AssetType = keyof typeof tiles;
