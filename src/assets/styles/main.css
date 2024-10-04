@@ -43,6 +43,48 @@
     cursor: auto;
 }
 
+input[type='checkbox'] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: black;
+    /* Not removed via appearance */
+    margin: 0;
+
+    font: inherit;
+    color: currentColor;
+    width: 1rem;
+    aspect-ratio: 1 / 1;
+    border: 1px solid currentColor;
+    rotate: 45deg;
+
+    display: grid;
+    place-content: center;
+}
+
+input[type='checkbox']::before {
+    content: '';
+    width: 0.65rem;
+    height: 0.65rem;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1rem 1rem white;
+}
+
+input[type='checkbox']:checked::before {
+    transform: scale(1);
+}
+
+.ui-checkbox {
+    font-size: 2.6rem;
+    font-weight: bold;
+    line-height: 1.1;
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+}
+
 /* Animations */
 
 @keyframes fadeIn {
@@ -283,6 +325,7 @@ mark {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 10vh;
 }
 
 .settings-title {
@@ -291,6 +334,23 @@ mark {
 }
 
 .settings-title > button {
-    font-size: 2rem;
+    font-size: 2.5rem;
     rotate: 180deg;
+    padding-bottom: 15px;
+    cursor: pointer;
+    filter: brightness(0.7);
+}
+
+.settings-title > button:hover {
+    transform: scale(1.2);
+    filter: brightness(1);
+}
+
+.settings-list {
+    display: grid;
+    grid-template-columns: 1fr 4rem;
+    width: 100%;
+    max-width: 450px;
+    align-items: center;
+    font-size: 2rem;
 }
