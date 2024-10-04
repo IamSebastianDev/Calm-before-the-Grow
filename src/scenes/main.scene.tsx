@@ -6,16 +6,17 @@ import { Lights } from '../components/lights';
 import { TileRenderer } from '../components/tile-renderer';
 
 import { ThreeEvent } from '@react-three/fiber';
+import { useEffect } from 'react';
 import { Overlay } from '../components/overlay';
 import { PropRenderer } from '../components/prop-renderer';
 import { TileStack } from '../components/tile-stack';
 import { Scene } from '../core/scene-manager';
 import { sortTilesByProximity } from '../functions/sort-by-proximity';
 import { useDevice } from '../hooks/use-device';
+import { useAudio } from '../providers/audio.provider';
 import { upgradeTile } from '../stores/grid/grid.actions';
 import { useOrderedGrid } from '../stores/grid/grid.store';
 import { usePropList } from '../stores/props/props.store';
-import { useQuestStore } from '../stores/quests/quests.store';
 import { takeTileFromStack } from '../stores/stack/stack.actions';
 import { useStackStore } from '../stores/stack/stack.store';
 
@@ -24,8 +25,17 @@ export const Main: Scene = () => {
     const props = usePropList();
     const stack = useStackStore();
     const device = useDevice();
-    const quests = useQuestStore();
-    console.log({ quests });
+    const audio = useAudio();
+
+    useEffect(() => {
+        const { start, stop } = audio.createPlaylist(['gardenRhythm', 'pixelDreams']);
+
+        start();
+
+        return () => {
+            stop();
+        };
+    }, []);
 
     const handleTileClicked = (event: ThreeEvent<PointerEvent>) => {
         event.stopPropagation();

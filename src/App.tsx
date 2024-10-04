@@ -5,7 +5,9 @@ import { Loading } from './components/loading';
 import { AssetLoader } from './core/asset-loader';
 import { Display } from './core/display';
 import { SceneManager } from './core/scene-manager';
+import { SettingsProvider } from './core/settings';
 import { AssetProvider } from './providers/asset.provider';
+import { AudioProvider } from './providers/audio.provider';
 import { ControllerProvider } from './providers/controller.provider';
 import { Main } from './scenes/main.scene';
 import { Menu } from './scenes/menu.scene';
@@ -21,17 +23,21 @@ export const App = () => {
 
     return (
         <ControllerProvider>
-            <Display enableFPS={import.meta.env.DEV}>
-                <AssetLoader loader={Loading}>
-                    <AssetProvider>
-                        <SceneManager>
-                            <Menu id="menu" />
-                            <Main id="main" />
-                            <Settings id="settings" />
-                        </SceneManager>
-                    </AssetProvider>
-                </AssetLoader>
-            </Display>
+            <SettingsProvider>
+                <Display enableFPS={import.meta.env.DEV}>
+                    <AssetLoader loader={Loading}>
+                        <AssetProvider>
+                            <AudioProvider>
+                                <SceneManager>
+                                    <Menu id="menu" />
+                                    <Main id="main" />
+                                    <Settings id="settings" />
+                                </SceneManager>
+                            </AudioProvider>
+                        </AssetProvider>
+                    </AssetLoader>
+                </Display>
+            </SettingsProvider>
         </ControllerProvider>
     );
 };

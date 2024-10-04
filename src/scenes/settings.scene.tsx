@@ -5,20 +5,20 @@ import { Lights } from '../components/lights';
 
 import { ChangeEvent } from 'react';
 import { Scene, useScene } from '../core/scene-manager';
-import { useDevice } from '../hooks/use-device';
+import { useSettings } from '../core/settings';
 
 export const Settings: Scene = () => {
     const sceneManager = useScene();
-    const device = useDevice();
+    const settings = useSettings();
 
     const handleRequestFullscreen = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
-        device.requestFullscreen(target.checked);
+        settings.requestFullscreen(target.checked);
     };
 
     const handleRequestMute = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
-        device.requestMute(target.checked);
+        settings.setMuted(target.checked);
     };
 
     return (
@@ -38,7 +38,7 @@ export const Settings: Scene = () => {
                                 id="fullscreen"
                                 className="ui-checkbox-input"
                                 type="checkbox"
-                                checked={device.isFullscreen}
+                                checked={settings.isFullscreen}
                                 onChange={(event) => handleRequestFullscreen(event)}
                             />
                         </label>
@@ -49,7 +49,7 @@ export const Settings: Scene = () => {
                                 id="sound"
                                 className="ui-checkbox-input"
                                 type="checkbox"
-                                checked={device.isMuted}
+                                checked={settings.isMuted}
                                 onChange={(event) => handleRequestMute(event)}
                             />
                         </label>
