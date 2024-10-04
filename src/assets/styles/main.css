@@ -247,7 +247,7 @@ input[type='checkbox']:checked::before {
     position: absolute;
     top: 0;
     left: 0;
-    max-width: min(35vw, 350px);
+    max-width: min(50vw, 350px);
     width: 100%;
     margin: 0.75rem;
     display: flex;
@@ -263,7 +263,7 @@ input[type='checkbox']:checked::before {
 
 .quest-entry .quest-title {
     border: 1px solid white;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     text-shadow: 0px 0px 1px white;
     padding-top: 0.75rem;
     padding-bottom: 1rem;
@@ -285,7 +285,7 @@ input[type='checkbox']:checked::before {
     flex-direction: column;
     gap: 0.1rem;
     border: 1px solid white;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     padding: 0.5rem;
     background: rgba(0, 0, 0, 0.5);
     text-align: justify;
@@ -331,20 +331,6 @@ mark {
 .settings-title {
     display: flex;
     gap: 1rem;
-    line-height: 0;
-}
-
-.settings-title > button {
-    font-size: 2.5rem;
-    rotate: 180deg;
-    cursor: pointer;
-    filter: brightness(0.7);
-    line-height: 0;
-}
-
-.settings-title > button:hover {
-    transform: scale(1.2);
-    filter: brightness(1);
 }
 
 .settings-list {
@@ -357,4 +343,19 @@ mark {
     font-size: 2rem;
     margin-inline: 24px;
     column-gap: 50px;
+}
+
+.settings-list label {
+    align-self: end;
+}
+
+.settings-button {
+    font-size: 2rem;
+    filter: brightness(0.7);
+    transition: 0.5s ease;
+    cursor: pointer;
+}
+
+.settings-button:hover {
+    filter: brightness(1);
 }

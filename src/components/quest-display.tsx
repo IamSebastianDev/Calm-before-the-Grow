@@ -23,14 +23,16 @@ const QuestEntry = ({ quest }: QuestEntryProps) => {
             {isOpen && (
                 <div className="quest-content">
                     <div className="quest-text">{quest.text}</div>
-                    <ul className="quest-list">
-                        {...quest.goals.map((goal, idx) => (
-                            <li className="quest-goal" key={idx}>
-                                <div>{goal.progress}</div>
-                                <div>{goal.fulfilled ? '◆' : '◇'}</div>
-                            </li>
-                        ))}
-                    </ul>
+                    {quest.goals.length > 0 && (
+                        <ul className="quest-list">
+                            {...quest.goals.map((goal, idx) => (
+                                <li className="quest-goal" key={idx}>
+                                    <div>{goal.progress}</div>
+                                    <div>{goal.fulfilled ? '◆' : '◇'}</div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                     {quest.tip && <div className="quest-tip">Tip: {quest.tip}</div>}
                 </div>
             )}

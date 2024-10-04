@@ -27,7 +27,6 @@ export const Settings: Scene = () => {
             <Html center={true}>
                 <div className="container settings-menu">
                     <div className="settings-title">
-                        <button onPointerDown={() => sceneManager.next('menu')}>▹</button>
                         <div className="ui-heading">Settings</div>
                     </div>
                     <div className="settings-list">
@@ -54,6 +53,10 @@ export const Settings: Scene = () => {
                             />
                         </label>
                     </div>
+                    {/* Back button */}
+                    <button className="settings-button" onPointerDown={() => sceneManager.next('menu')}>
+                        Back to menu
+                    </button>
                 </div>
             </Html>
         </>
