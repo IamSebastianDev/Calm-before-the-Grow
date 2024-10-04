@@ -348,6 +348,7 @@ mark {
 
 .settings-list {
     display: grid;
+    row-gap: 0.5rem;
     grid-template-columns: 1fr 4rem;
     width: 100%;
     max-width: 450px;

@@ -16,6 +16,11 @@ export const Settings: Scene = () => {
         device.requestFullscreen(target.checked);
     };
 
+    const handleRequestMute = (event: ChangeEvent<HTMLInputElement>) => {
+        const { target } = event;
+        device.requestMute(target.checked);
+    };
+
     return (
         <>
             <Lights />
@@ -26,6 +31,7 @@ export const Settings: Scene = () => {
                         <div className="ui-heading">Settings</div>
                     </div>
                     <div className="settings-list">
+                        {/* Fullscreen */}
                         <div>Fullscreen</div>
                         <label htmlFor="fullscreen" className="ui-checkbox">
                             <input
@@ -34,6 +40,17 @@ export const Settings: Scene = () => {
                                 type="checkbox"
                                 checked={device.isFullscreen}
                                 onChange={(event) => handleRequestFullscreen(event)}
+                            />
+                        </label>
+                        {/* Music Mute */}
+                        <div>Mute Sound</div>
+                        <label htmlFor="sound" className="ui-checkbox">
+                            <input
+                                id="sound"
+                                className="ui-checkbox-input"
+                                type="checkbox"
+                                checked={device.isMuted}
+                                onChange={(event) => handleRequestMute(event)}
                             />
                         </label>
                     </div>
