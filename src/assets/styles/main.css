@@ -331,14 +331,15 @@ mark {
 .settings-title {
     display: flex;
     gap: 1rem;
+    line-height: 0;
 }
 
 .settings-title > button {
     font-size: 2.5rem;
     rotate: 180deg;
-    padding-bottom: 15px;
     cursor: pointer;
     filter: brightness(0.7);
+    line-height: 0;
 }
 
 .settings-title > button:hover {
@@ -350,8 +351,10 @@ mark {
     display: grid;
     row-gap: 0.5rem;
     grid-template-columns: 1fr 4rem;
-    width: 100%;
+    width: 90vw;
     max-width: 450px;
     align-items: center;
     font-size: 2rem;
+    margin-inline: 24px;
+    column-gap: 50px;
 }
