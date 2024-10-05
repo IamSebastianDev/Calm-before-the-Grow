@@ -85,6 +85,17 @@ input[type='checkbox']:checked::before {
     gap: 0.5em;
 }
 
+.ui-text {
+    font-size: 1.5rem;
+    max-width: 450px;
+}
+
+.scroll-container {
+    display: block;
+    height: 50vh;
+    overflow: scroll;
+}
+
 /* Animations */
 
 @keyframes fadeIn {
@@ -364,4 +375,17 @@ mark {
 
 .settings-button:hover {
     filter: brightness(1);
+}
+
+.howto-body {
+    height: 50vh;
+}
+
+.howto-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10vh;
+    overflow: hidden;
 }
