@@ -8,8 +8,8 @@ import { RiverQuest } from './river.quest';
 
 export class GrowthQuest extends Quest {
     fulfilled: boolean = false;
-    title = '4. Growth';
-    text = 'Grow your garden a bit';
+    title = '4. Everything should grow';
+    text = 'Grow your garden by combining tiles to gain new tiles.';
 
     goals = [
         {

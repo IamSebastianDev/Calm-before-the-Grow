@@ -126,9 +126,9 @@ class UpgradeActions {
             from: ['selector'],
             to: ['shallow_water'],
             action: (state, tile, target) => {
+                this.destroyPropsOnTile(tile);
                 this.increaseScore(5);
                 this.grantNewTiles('shallow_water', 'dirt');
-                this.destroyPropsOnTile(tile);
                 return this.swapTiles(state, tile, target);
             },
             score: 7,
@@ -274,11 +274,11 @@ class UpgradeActions {
         {
             from: ['rocks'],
             to: ['shallow_water'],
-            action: (state) => {
+            action: (state, tile, target) => {
                 this.increaseScore(1);
-                this.grantNewTiles('rocks');
+                this.grantNewTiles('rocks', 'rocks');
 
-                return state;
+                return this.swapTiles(state, tile, target);
             },
             score: 3,
             hint: '+1, +1 ◇',
@@ -288,7 +288,7 @@ class UpgradeActions {
         // selector tiles should be generated
         {
             from: ['selector'],
-            to: ['dirt', 'grass', 'shallow_water', 'soil', 'rocks'],
+            to: ['dirt', 'grass', 'shallow_water', 'soil', 'rocks', 'deep_water'],
             action: (state, tile) => {
                 this.destroyPropsOnTile(tile);
                 return this.addNewSelectorTiles(state, tile);
@@ -376,6 +376,25 @@ class UpgradeActions {
                 this.increaseScore(40);
                 neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile(getRandomFlower(), tile));
                 this.addPropToTile('small_rock_01', tile);
+                return state;
+            },
+        },
+        {
+            name: 'Deep runs the river',
+            pattern: [
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+            ],
+            action: (state, tile) => {
+                this.increaseScore(25);
+                this.swapTiles(state, tile, 'deep_water');
                 return state;
             },
         },

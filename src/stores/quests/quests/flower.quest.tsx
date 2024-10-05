@@ -9,7 +9,7 @@ import { GrowthQuest } from './growth.quest';
 
 export class FlowerQuest extends Quest {
     fulfilled: boolean = false;
-    title = '3. Flowers';
+    title = '3. Colorful Combinations';
     text = (
         <>
             Your meadow looks empty. Grow some flowers by placing <mark>water</mark> or <mark>grass</mark> on{' '}

@@ -15,6 +15,8 @@ import tile_063 from '../assets/sprites/tile_063.png';
 import tile_064 from '../assets/sprites/tile_064.png';
 // Water
 import tile_104 from '../assets/sprites/tile_104.png';
+// Deep water
+import tile_094 from '../assets/sprites/tile_094.png';
 // Flowers
 import tile_041 from '../assets/sprites/tile_041.png';
 import tile_042 from '../assets/sprites/tile_042.png';
@@ -38,6 +40,7 @@ export const tiles = {
     grass_2: tile_023,
     grass_3: tile_024,
     shallow_water_1: tile_104,
+    deep_water_1: tile_094,
     rocks_1: tile_061,
     rocks_2: tile_063,
 };
@@ -55,6 +58,7 @@ export const textureMatcher: Record<AbstractTile, TileType[]> = {
     soil: ['soil_1'],
     selector: ['selector'],
     shallow_water: ['shallow_water_1'],
+    deep_water: ['deep_water_1'],
     rocks: ['rocks_1', 'rocks_2'],
 };
 
