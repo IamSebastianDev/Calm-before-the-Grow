@@ -9,7 +9,7 @@ export class AudioController<T extends Record<string, HTMLAudioElement>> {
     private muted: boolean = false;
 
     loaded() {
-        return new Promise<void>(async (resolve) => {
+        return new Promise<void>((resolve) => {
             const entries = Object.values(this.files).map((audio) => {
                 return new Promise<void>((resolve, reject) => {
                     audio.addEventListener('canplaythrough', () => resolve());
@@ -17,8 +17,7 @@ export class AudioController<T extends Record<string, HTMLAudioElement>> {
                 });
             });
 
-            await Promise.all(entries);
-            resolve();
+            Promise.all(entries).then(() => resolve());
         });
     }
 
