@@ -9,11 +9,6 @@ import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
 import { AbstractTile, SelectorTile, Tile } from './grid.tiles';
 
-// Tile Upgrade Actions. By default, we simply replace the tile, but some
-// tiles have special effects when upgrading (switching types, do something else)
-// Effects are done as standalone functions, enabling us to set
-// store and state as we want.
-
 export type UpgradeActionStateMachineEntry = {
     from: Array<AbstractTile>;
     to: Array<AbstractTile>;
@@ -37,7 +32,7 @@ type PatchPattern = [
 ];
 
 export type EffectActionStateMachineEntry = {
-    name?: string;
+    name: string;
     pattern: RowPattern | CirclePattern | PatchPattern;
     action: (
         state: GridStore,
@@ -289,10 +284,14 @@ class UpgradeActions {
             from: ['deep_water'],
             to: ['rocks'],
             action: (state, tile) => {
+                this.increaseScore(4);
+                this.grantNewTiles('shallow_water');
+
                 return this.swapTiles(state, tile, 'rocky_water');
             },
+            score: 5,
+            hint: '+4, +1 ◇',
         },
-
         // This action is executed whenever a selector tile is upgraded, and new
         // selector tiles should be generated
         {
@@ -345,9 +344,13 @@ class UpgradeActions {
 
     getTileEffectActions(neighbors: ReturnType<typeof getNeighbors>): EffectActionStateMachineEntry['action'][] {
         const effects = this.effects.filter((effect) => this.matchPattern(effect.pattern, neighbors));
-        return effects.map(({ action }) => action);
+        return effects.map(({ action, name }) => {
+            this.matchedPatterns.add(name);
+            return action;
+        });
     }
 
+    matchedPatterns = new Set<string>();
     private effects: Array<EffectActionStateMachineEntry> = [
         {
             name: 'Lawn',
@@ -355,6 +358,7 @@ class UpgradeActions {
             action: (state) => {
                 this.increaseScore(15);
                 this.grantNewTiles('soil', 'soil', 'soil');
+
                 return state;
             },
         },
@@ -365,6 +369,7 @@ class UpgradeActions {
                 this.increaseScore(25);
                 this.grantNewTiles('grass', 'grass', 'grass');
                 this.swapTiles(state, tile, 'grass');
+
                 return state;
             },
         },
@@ -375,6 +380,7 @@ class UpgradeActions {
                 this.increaseScore(40);
                 neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile(getRandomFlower(), tile));
                 this.destroyPropsOnTile(tile);
+
                 return state;
             },
         },
@@ -385,6 +391,7 @@ class UpgradeActions {
                 this.increaseScore(40);
                 neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile(getRandomFlower(), tile));
                 this.addPropToTile(getRandomRock(), tile);
+
                 return state;
             },
         },
@@ -394,6 +401,7 @@ class UpgradeActions {
             action: (state, tile) => {
                 this.increaseScore(25);
                 this.swapTiles(state, tile, 'deep_water');
+
                 return state;
             },
         },
@@ -403,6 +411,7 @@ class UpgradeActions {
             action: (state, tile) => {
                 this.increaseScore(50);
                 this.swapTiles(state, tile, 'rocky_water');
+
                 return state;
             },
         },

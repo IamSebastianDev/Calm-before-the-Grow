@@ -4,7 +4,7 @@
 import { addToScore } from '../../game-state/game-state.actions';
 import { GridStore } from '../../grid/grid.store';
 import { Quest, QuestProgress } from '../quest';
-import { FinalQuest } from './final.quest';
+import { DolmenQuest } from './dolmen.quest';
 
 export class RiverQuest extends Quest {
     fulfilled: boolean = false;
@@ -25,7 +25,7 @@ export class RiverQuest extends Quest {
     ];
     tip = `Placing water tiles on the edges of your garden will grant you new water tiles. A bigger body of water will be deeper.`;
 
-    next = () => new FinalQuest();
+    next = () => new DolmenQuest();
 
     reward = () => {
         addToScore(500);
