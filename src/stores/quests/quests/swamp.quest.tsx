@@ -20,7 +20,7 @@ export class SwampQuest extends Quest {
         {
             id: crypto.randomUUID(),
             fulfilled: false,
-            progress: `Build a Dolmen`,
+            progress: `Create a Swamp`,
         },
     ];
     tip = undefined;
