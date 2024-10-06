@@ -88,6 +88,8 @@ input[type='checkbox']:checked::before {
 .ui-text {
     font-size: 1.5rem;
     max-width: 450px;
+    line-height: 1.6rem;
+    text-align: justify;
 }
 
 .scroll-container {
@@ -377,10 +379,6 @@ mark {
     filter: brightness(1);
 }
 
-.howto-body {
-    height: 50vh;
-}
-
 .howto-menu {
     display: flex;
     flex-direction: column;
@@ -388,4 +386,17 @@ mark {
     align-items: center;
     gap: 10vh;
     overflow: hidden;
+}
+
+.howto-body {
+    height: 50vh;
+}
+.howto-body a {
+    font-size: 1.6rem;
+    color: white;
+    filter: brightness(0.7);
+}
+
+.howto-body a:hover {
+    filter: brightness(1);
 }

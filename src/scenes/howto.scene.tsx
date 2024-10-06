@@ -1,15 +1,12 @@
 /** @format */
-/** @format */
 
 import { Html } from '@react-three/drei';
 import { Lights } from '../components/lights';
 
-import { useThree } from '@react-three/fiber';
 import { Scene, useScene } from '../core/scene-manager';
 
 export const HowTo: Scene = () => {
     const sceneManager = useScene();
-    const { gl } = useThree();
 
     return (
         <>
@@ -59,7 +56,36 @@ export const HowTo: Scene = () => {
                                 <li>
                                     <a href="https://suno.com">Suno.com for the Music</a>
                                 </li>
+                                <li>
+                                    <a href="https://pixabay.com/sound-effects/plopp-84863/">
+                                        Pixabay - UlfHubert - Plopp
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://leo-red.itch.io/lucid-icon-pack">Lucid Icons</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.piskelapp.com/">Piskel.com - Online Pixel Art editor</a>
+                                </li>
                             </ul>
+                            <h1>The rest of the talk</h1>
+                            <p className="ui-text">
+                                <mark>Calm before the Grow</mark> was created for{' '}
+                                <a href="https://reactjam.com/">Reactjam Fall 2024</a> in the span of 10 days. The theme
+                                for the Jam was <mark>Retro Minimalism</mark> and I tried to capture minimalistic games
+                                that focus on a simple gameloop and progression system, while providing a retro and
+                                minimalistic visual experience. The game is best enjoyed on a dekstop pc, mobile does
+                                have it's issues.
+                            </p>
+                            <p className="ui-text">
+                                If you want to see more games / more of my work, you can check out my{' '}
+                                <a href="https://github.com/iamsebastiandev">Github.</a>
+                            </p>
+                            <p className="ui-text">
+                                I was able to implement most of the features I wanted to, but missed out on animated
+                                animals & trees, which were the two big features I was unable to complete. I'm sorry,
+                                but we did adopt a cute puppy 🐶, which takes up quite some time.
+                            </p>
                         </div>
                     </div>
                     {/* Back button */}
