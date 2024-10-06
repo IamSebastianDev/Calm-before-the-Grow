@@ -26,5 +26,3 @@ export const usePropList = () => {
     const props = usePropsStore();
     return [...props.props.values()].sort(sortByYIndex);
 };
-
-usePropsStore.subscribe((state) => console.log({ props: state }));

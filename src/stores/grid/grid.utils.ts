@@ -161,7 +161,7 @@ class UpgradeActions {
                 this.increaseScore(4);
                 this.grantNewTiles('dirt');
                 this.addPropToTile(getRandomFlower(), tile);
-                console.log({ state, tile, props: usePropsStore.getState() });
+
                 return state;
             },
             score: 5,
