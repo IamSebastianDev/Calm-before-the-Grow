@@ -2,6 +2,7 @@
     "allow": [
         "husky",
         "hook",
-        "hooks"
+        "hooks",
+        "just"
     ]
 }
