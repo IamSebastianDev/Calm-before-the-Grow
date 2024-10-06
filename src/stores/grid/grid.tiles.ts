@@ -4,7 +4,16 @@ import { Vector2 } from 'three';
 import { random } from '../../functions/random';
 import { AssetType } from '../../providers/asset.provider';
 
-export const abstractTileTypes = ['selector', 'dirt', 'soil', 'grass', 'shallow_water', 'deep_water', 'rocks'] as const;
+export const abstractTileTypes = [
+    'selector',
+    'dirt',
+    'soil',
+    'grass',
+    'shallow_water',
+    'deep_water',
+    'rocks',
+    'rocky_water',
+] as const;
 export type AbstractTile = (typeof abstractTileTypes)[number];
 
 export type TileType = AssetType;
@@ -18,8 +27,10 @@ export type AnimatedTile = Tile & {
 
 export const getRandomAbstractTile = () => {
     // We filter the selector tile, as we do not wan't any animated tiles
-    const tiles = [...abstractTileTypes].filter((tile) => tile !== 'selector' && tile !== 'deep_water');
-    return random<Exclude<AbstractTile, 'selector' | 'deep_water'>>(tiles);
+    const tiles = [...abstractTileTypes].filter(
+        (tile) => tile !== 'selector' && tile !== 'deep_water' && tile !== 'rocky_water',
+    );
+    return random<Exclude<AbstractTile, 'selector' | 'deep_water' | 'rocky_water'>>(tiles);
 };
 
 export class Tile {

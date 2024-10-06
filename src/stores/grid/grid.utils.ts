@@ -1,8 +1,9 @@
 /** @format */
 
 import { Vector2 } from 'three';
+import { random } from '../../functions/random';
 import { addToScore } from '../game-state/game-state.actions';
-import { addProp, getRandomFlower } from '../props/props.actions';
+import { addProp, getRandomFlower, getRandomLog, getRandomRock } from '../props/props.actions';
 import { PropType, usePropsStore } from '../props/props.store';
 import { addTilesToStack } from '../stack/stack.actions';
 import { GridStore } from './grid.store';
@@ -264,7 +265,7 @@ class UpgradeActions {
             action: (state, tile) => {
                 this.increaseScore(2);
                 this.grantNewTiles('dirt');
-                this.addPropToTile('small_rock_01', tile);
+                this.addPropToTile(getRandomRock(), tile);
 
                 return state;
             },
@@ -282,6 +283,14 @@ class UpgradeActions {
             },
             score: 3,
             hint: '+1, +1 ◇',
+        },
+        // Deep water
+        {
+            from: ['deep_water'],
+            to: ['rocks'],
+            action: (state, tile) => {
+                return this.swapTiles(state, tile, 'rocky_water');
+            },
         },
 
         // This action is executed whenever a selector tile is upgraded, and new
@@ -375,26 +384,101 @@ class UpgradeActions {
             action: (state, tile, _, neighbors) => {
                 this.increaseScore(40);
                 neighbors.patch.filter((val) => !!val).forEach((tile) => this.addPropToTile(getRandomFlower(), tile));
-                this.addPropToTile('small_rock_01', tile);
+                this.addPropToTile(getRandomRock(), tile);
                 return state;
             },
         },
         {
             name: 'Deep runs the river',
-            pattern: [
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-                'shallow_water',
-            ],
+            pattern: ['shallow_water', 'shallow_water', 'shallow_water', 'shallow_water', 'shallow_water'],
             action: (state, tile) => {
                 this.increaseScore(25);
                 this.swapTiles(state, tile, 'deep_water');
+                return state;
+            },
+        },
+        {
+            name: 'Perch',
+            pattern: ['deep_water', 'deep_water', 'shallow_water', 'deep_water', 'deep_water'],
+            action: (state, tile) => {
+                this.increaseScore(50);
+                this.swapTiles(state, tile, 'rocky_water');
+                return state;
+            },
+        },
+        {
+            name: 'Swamp East',
+            pattern: [
+                'soil',
+                'shallow_water',
+                'soil',
+                'soil',
+                'shallow_water',
+                'soil',
+                'soil',
+                'shallow_water',
+                'soil',
+            ],
+            action: (state, __, _, neighbors) => {
+                this.increaseScore(50);
+
+                const getPlacement = () =>
+                    random([
+                        neighbors.patch[0],
+                        neighbors.patch[2],
+                        neighbors.patch[3],
+                        neighbors.patch[5],
+                        neighbors.patch[6],
+                        neighbors.patch[8],
+                    ]);
+
+                // Add some props
+                Array(3)
+                    .fill(null)
+                    .map(() => getPlacement())
+                    .forEach(
+                        (maybeTile) =>
+                            maybeTile && this.addPropToTile(random([getRandomLog, getRandomFlower])(), maybeTile),
+                    );
+
+                return state;
+            },
+        },
+        {
+            name: 'Swamp North',
+            pattern: [
+                'soil',
+                'soil',
+                'soil',
+                'shallow_water',
+                'shallow_water',
+                'shallow_water',
+                'soil',
+                'soil',
+                'soil',
+            ],
+            action: (state, __, _, neighbors) => {
+                this.increaseScore(50);
+
+                const getPlacement = () =>
+                    random([
+                        neighbors.patch[0],
+                        neighbors.patch[1],
+                        neighbors.patch[2],
+                        neighbors.patch[6],
+                        neighbors.patch[7],
+                        neighbors.patch[8],
+                    ]);
+
+                // Add some props
+                Array(3)
+                    .fill(null)
+                    .map(() => getPlacement())
+                    .forEach(
+                        (maybeTile) =>
+                            maybeTile && this.addPropToTile(random([getRandomLog, getRandomFlower])(), maybeTile),
+                    );
+
                 return state;
             },
         },
