@@ -351,6 +351,13 @@ class UpgradeActions {
     }
 
     matchedPatterns = new Set<string>();
+
+    public getEffects() {
+        return this.effects;
+    }
+    public getActions() {
+        return this.actions;
+    }
     private effects: Array<EffectActionStateMachineEntry> = [
         {
             name: 'Lawn',

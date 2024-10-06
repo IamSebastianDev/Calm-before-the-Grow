@@ -4,9 +4,11 @@ import { Html } from '@react-three/drei';
 import { Lights } from '../components/lights';
 
 import { Scene, useScene } from '../core/scene-manager';
+import { upgradeActions } from '../stores/grid/grid.utils';
 
 export const HowTo: Scene = () => {
     const sceneManager = useScene();
+    const patterns = upgradeActions.matchedPatterns.size;
 
     return (
         <>
@@ -42,6 +44,24 @@ export const HowTo: Scene = () => {
                                 you to what to do next. You don't have to fulfill these quest, however doing so will
                                 guide you through the game as well as award additional points.
                             </p>
+                            <h1>Encyclopedia</h1>
+                            <p className="ui-text">Upgrades:</p>
+                            {...upgradeActions.getActions().map((entry, idx) => (
+                                <div key={idx} className="howto-entry">
+                                    <mark>
+                                        {' '}
+                                        {entry.from.join(', ')} -&gt; {entry.to.join(', ')}
+                                    </mark>
+                                    {entry.hint ?? 0}
+                                </div>
+                            ))}
+                            <p className="ui-text">Patterns found: {patterns}/8</p>
+                            {...upgradeActions.getEffects().map((entry) => (
+                                <div key={entry.name} className="howto-entry">
+                                    <mark>{entry.name}</mark>
+                                    {entry.pattern.join(', ')}
+                                </div>
+                            ))}
                             <h1>Assets</h1>
                             <p className="ui-text">
                                 The following assets and technologies were used during the creation of{' '}

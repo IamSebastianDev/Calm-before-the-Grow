@@ -400,3 +400,14 @@ mark {
 .howto-body a:hover {
     filter: brightness(1);
 }
+
+.howto-entry {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-block: 1rem;
+    gap: 1rem;
+    max-width: 450px;
+    font-size: 1.5rem;
+}
