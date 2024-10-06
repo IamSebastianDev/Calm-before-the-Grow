@@ -11,6 +11,7 @@ import { Overlay } from '../components/overlay';
 import { PropRenderer } from '../components/prop-renderer';
 import { TileStack } from '../components/tile-stack';
 import { Scene } from '../core/scene-manager';
+import { getHeightOffset } from '../functions/get-height-offset';
 import { sortTilesByProximity } from '../functions/sort-by-proximity';
 import { useDevice } from '../hooks/use-device';
 import { useAudio } from '../providers/audio.provider';
@@ -67,7 +68,7 @@ export const Main: Scene = () => {
                         position={
                             new Vector3(
                                 tile.position.x + grid.offset.x,
-                                tile.position.y + grid.offset.y,
+                                tile.position.y + grid.offset.y + getHeightOffset(tile),
                                 idx * 0.000001,
                             )
                         }
