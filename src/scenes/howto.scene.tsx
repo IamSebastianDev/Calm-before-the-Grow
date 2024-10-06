@@ -4,15 +4,17 @@
 import { Html } from '@react-three/drei';
 import { Lights } from '../components/lights';
 
+import { useThree } from '@react-three/fiber';
 import { Scene, useScene } from '../core/scene-manager';
 
 export const HowTo: Scene = () => {
     const sceneManager = useScene();
+    const { gl } = useThree();
 
     return (
         <>
             <Lights />
-            <Html center={true}>
+            <Html center={true} portal={{ current: document.querySelector('#root')! }}>
                 <div className="container howto-menu">
                     <div className="settings-title">
                         <div className="ui-heading">How to play</div>
