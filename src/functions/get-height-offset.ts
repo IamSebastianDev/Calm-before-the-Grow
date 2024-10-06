@@ -1,7 +1,7 @@
 /** @format */
 
 import { Vector2 } from 'three';
-import { Tile } from '../stores/grid/grid.tiles';
+import { AbstractTile } from '../stores/grid/grid.tiles';
 
 // Array of predefined height values
 const heightValues: number[] = [0.1, 0.2, 0.3, 0.4, 0.5];
@@ -19,8 +19,8 @@ const simpleHash = ({ x, y }: Vector2): number => {
 };
 
 // Function to get a height offset for a given position
-export const getHeightOffset = ({ position, type }: Tile): number => {
-    if (type.endsWith('water') || type === 'selector') {
+export const getHeightOffset = (position: Vector2, type?: AbstractTile): number => {
+    if (type && (type.endsWith('water') || type === 'selector')) {
         return 0.1;
     }
 

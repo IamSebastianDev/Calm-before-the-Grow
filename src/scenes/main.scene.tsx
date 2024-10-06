@@ -68,7 +68,7 @@ export const Main: Scene = () => {
                         position={
                             new Vector3(
                                 tile.position.x + grid.offset.x,
-                                tile.position.y + grid.offset.y + getHeightOffset(tile),
+                                tile.position.y + grid.offset.y + getHeightOffset(tile.position, tile.type),
                                 idx * 0.000001,
                             )
                         }
@@ -84,7 +84,7 @@ export const Main: Scene = () => {
                         position={
                             new Vector3(
                                 prop.position.x + grid.offset.x,
-                                prop.position.y + grid.offset.y + 0.45,
+                                prop.position.y + grid.offset.y + 0.45 + getHeightOffset(prop.position),
                                 idx * 0.000001,
                             )
                         }

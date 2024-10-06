@@ -16,7 +16,7 @@ const QuestEntry = ({ quest }: QuestEntryProps) => {
     useControllerAction(controller, 'JOURNAL', () => setIsOpen((c) => !c));
 
     return (
-        <div className={`quest-entry ${quest.fulfilled ? 'fulfilled' : ''}`}>
+        <div className={`quest-entry ${quest.fulfilled ? 'fulfilled' : ''}`} key={quest.id}>
             <button className="quest-title" onClick={() => setIsOpen((c) => !c)}>
                 {quest.title} <div className="show-quest-content-btn">{!isOpen ? '◎' : '◉'}</div>
             </button>

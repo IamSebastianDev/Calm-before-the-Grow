@@ -109,6 +109,21 @@ input[type='checkbox']:checked::before {
     }
 }
 
+@keyframes pulse {
+    0% {
+        opacity: 0;
+        transform: scale(0.9); /* Start slightly smaller */
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05); /* Slight increase in size */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1); /* End at normal size */
+    }
+}
+
 .fades-in {
     opacity: 1; /* Start hidden */
     animation: fadeIn 2.5s ease-out forwards; /* 3s animation duration */
@@ -278,6 +293,7 @@ input[type='checkbox']:checked::before {
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    animation: pulse 450ms 1;
 }
 
 .quest-entry .quest-title {
