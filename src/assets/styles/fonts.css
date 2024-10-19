@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Monogram';
-    src: url('/fonts/monogram.ttf') format('truetype');
+    src: url('../fonts/monogram.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

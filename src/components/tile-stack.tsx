@@ -34,7 +34,7 @@ const TileCount = ({ position, count }: TileCountProps) => {
         <animated.group position={position} scale={scale}>
             <Text
                 fontSize={0.4}
-                font={'/fonts/monogram.ttf'}
+                font={'./fonts/monogram.ttf'}
                 color="white"
                 textAlign="center"
                 anchorX="center"
@@ -137,7 +137,7 @@ export const TileStack = () => {
             <group position={new Vector3(1, 0, 1)} scale={0.75}>
                 <Text
                     fontSize={0.4}
-                    font={'/fonts/monogram.ttf'}
+                    font={'./fonts/monogram.ttf'}
                     color="white"
                     textAlign="center"
                     anchorX="center"
@@ -156,7 +156,7 @@ export const TileStack = () => {
                 <group position={new Vector3(1.25, Math.max(currentTiles.length * 0.5 - 0.5, 1.4), 5)} scale={0.75}>
                     <Text
                         fontSize={0.28}
-                        font={'/fonts/monogram.ttf'}
+                        font={'./fonts/monogram.ttf'}
                         color="white"
                         textAlign="center"
                         anchorX="center"

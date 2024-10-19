@@ -206,5 +206,5 @@ export const assets = {
 
 export type AssetType = keyof typeof tiles;
 export const { useAssets, AssetProvider } = createAssetProvider({ ...assets, ...tiles, ...props }, [
-    '/fonts/monogram.ttf',
+    './fonts/monogram.ttf',
 ]);
