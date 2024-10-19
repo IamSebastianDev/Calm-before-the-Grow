@@ -1,8 +1,8 @@
 <!-- @format -->
 
-# React Jam 2024 - Fall - Calm before the Grow
+# React Jam 2024 - Fall - Calm before the Bloom
 
-**Calm before the Grow** is designed to be a zen experience. There's no winning or losing — just relax and enjoy the process of creating your own small island of tranquility.
+**Calm before the Bloom** is designed to be a zen experience. There's no winning or losing — just relax and enjoy the process of creating your own small island of tranquility.
 
 ## How to Play
 
@@ -14,7 +14,7 @@ In the upper right corner, a **Quest** will be displayed, offering hints and gui
 
 ## Assets
 
-The following assets and technologies were used during the creation of **Calm before the Grow**:
+The following assets and technologies were used during the creation of **Calm before the Bloom**:
 
 -   [32 x 32 Pixel Isometric Tiles](https://scrabling.itch.io/pixel-isometric-tiles)
 -   [Suno.com for the Music](https://suno.com)
@@ -24,7 +24,7 @@ The following assets and technologies were used during the creation of **Calm be
 
 ## The Rest of the Talk
 
-**Calm before the Grow** was created for the [Reactjam Fall 2024](https://reactjam.com/) in 10 days. The theme was **Retro Minimalism**, and I aimed to capture the essence of minimalist games with a basic gameplay loop and progression system, all within a retro and minimalistic visual style. The game is best experienced on a desktop PC, though mobile may present some issues.
+**Calm before the Bloom** was created for the [Reactjam Fall 2024](https://reactjam.com/) in 10 days. The theme was **Retro Minimalism**, and I aimed to capture the essence of minimalist games with a basic gameplay loop and progression system, all within a retro and minimalistic visual style. The game is best experienced on a desktop PC, though mobile may present some issues.
 
 If you're interested in more of my work, check out my [Github](https://github.com/iamsebastiandev).
 

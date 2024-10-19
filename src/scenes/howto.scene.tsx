@@ -21,9 +21,9 @@ export const HowTo: Scene = () => {
                     {/* Instructions */}
                     <div className="howto-body">
                         <div className="scroll-container">
-                            <h1>Calm before the Grow</h1>
+                            <h1>Calm before the Bloom</h1>
                             <p className="ui-text">
-                                <b>Calm before the Grow</b> is supposed to be a zen experience. Don't stress, there is
+                                <b>Calm before the Bloom</b> is supposed to be a zen experience. Don't stress, there is
                                 no winning or losing. Enjoy the process of creating your own small island of
                                 tranquility.
                             </p>
@@ -65,7 +65,7 @@ export const HowTo: Scene = () => {
                             <h1>Assets</h1>
                             <p className="ui-text">
                                 The following assets and technologies were used during the creation of{' '}
-                                <mark>Calm before the grow</mark>.
+                                <mark>Calm before the Bloom</mark>.
                             </p>
                             <ul>
                                 <li>
@@ -90,7 +90,7 @@ export const HowTo: Scene = () => {
                             </ul>
                             <h1>The rest of the talk</h1>
                             <p className="ui-text">
-                                <mark>Calm before the Grow</mark> was created for{' '}
+                                <mark>Calm before the Bloom</mark> was created for{' '}
                                 <a href="https://reactjam.com/">Reactjam Fall 2024</a> in the span of 10 days. The theme
                                 for the Jam was <mark>Retro Minimalism</mark> and I tried to capture minimalistic games
                                 that focus on a simple gameloop and progression system, while providing a retro and
