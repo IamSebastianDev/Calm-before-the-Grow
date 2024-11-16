@@ -6,6 +6,7 @@ import { Lights } from '../components/lights';
 import { Scene, useScene } from '../core/scene-manager';
 import { startGame } from '../stores/game-state/game-state.actions';
 import { useGameState } from '../stores/game-state/game-state.store';
+import { gameStorage } from '../stores/storage';
 
 export const Menu: Scene = () => {
     const sceneManager = useScene();
@@ -17,7 +18,9 @@ export const Menu: Scene = () => {
     };
 
     const handleResumeGameClick = () => {
-        if (!started) return;
+        console.log({ dis: gameStorage.hasStoredState });
+        if (!gameStorage.hasStoredState) return;
+        gameStorage.loadGameState();
         sceneManager.next('main');
     };
 
@@ -39,7 +42,11 @@ export const Menu: Scene = () => {
                         <button className="ui-button" onPointerDown={() => handleStartGameClick()}>
                             Start new Game
                         </button>
-                        <button disabled={!started} className="ui-button" onPointerDown={() => handleResumeGameClick()}>
+                        <button
+                            disabled={!started || !gameStorage.hasStoredState}
+                            className="ui-button"
+                            onPointerDown={() => handleResumeGameClick()}
+                        >
                             Resume Game
                         </button>
                         <button className="ui-button" onPointerDown={() => handleHowtoClick()}>

@@ -6,6 +6,7 @@ import { Quest, QuestProgress } from '../quest';
 import { FinalQuest } from './final.quest';
 
 export class SwampQuest extends Quest {
+    key = 7;
     fulfilled: boolean = false;
     title = '7. When decay leads to new life';
     text = (

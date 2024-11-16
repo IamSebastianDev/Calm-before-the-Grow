@@ -42,6 +42,7 @@ const QuestEntry = ({ quest }: QuestEntryProps) => {
 
 export const QuestDisplay = () => {
     const quest = useQuestStore();
+    console.log({ quest });
 
     return (
         <div className="quest-overlay">

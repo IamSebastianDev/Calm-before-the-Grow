@@ -5,6 +5,7 @@ import { upgradeActions } from '../../grid/grid.utils';
 import { Quest, QuestProgress } from '../quest';
 
 export class FinalQuest extends Quest {
+    key = 8;
     fulfilled: boolean = false;
     title = '8. The eternal growth';
     text =

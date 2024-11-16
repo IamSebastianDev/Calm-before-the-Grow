@@ -13,6 +13,7 @@ import {
     moveGridOffsetRight,
     moveGridOffsetUp,
 } from '../stores/grid/grid.actions';
+import { gameStorage } from '../stores/storage';
 import { QuestDisplay } from './quest-display';
 import { RotateDevice } from './rotate-device';
 import { ScoreRow } from './score-row';
@@ -37,7 +38,10 @@ export const Overlay = () => {
                 {/* Menu Buttons */}
                 <ScoreRow
                     assets={assets}
-                    onMenuClick={() => scene.next('menu')}
+                    onMenuClick={() => {
+                        gameStorage.storeGameState();
+                        scene.next('menu');
+                    }}
                     onHelpClick={() => scene.next('howto')}
                 />
                 {/* Quest */}

@@ -11,6 +11,7 @@ export type QuestProgress = {
 };
 
 export abstract class Quest {
+    abstract key: number;
     readonly id = crypto.randomUUID();
     abstract fulfilled: boolean;
     abstract goals: QuestProgress[];

@@ -8,6 +8,7 @@ import { Quest, QuestProgress } from '../quest';
 import { GrowthQuest } from './growth.quest';
 
 export class FlowerQuest extends Quest {
+    key = 3;
     fulfilled: boolean = false;
     title = '3. Colorful Combinations';
     text = (

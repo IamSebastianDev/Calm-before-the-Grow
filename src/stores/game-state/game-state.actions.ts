@@ -43,3 +43,18 @@ export const stopClock = () => {
         timerId = null;
     }
 };
+
+// Save and load methods
+
+export const getCurrentGameStateForSerialization = () => {
+    return JSON.stringify(useGameState.getState());
+};
+
+export const setCurrentGameStateFromSerialized = (state: string) => {
+    const parsed = JSON.parse(state);
+    useGameState.setState({
+        clock: parsed.clock,
+        started: parsed.started,
+        score: parsed.score,
+    });
+};

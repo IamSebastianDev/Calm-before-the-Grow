@@ -7,6 +7,7 @@ import { Quest, QuestProgress } from '../quest';
 import { MeadowQuest } from './meadow.quest';
 
 export class InitialQuest extends Quest {
+    key = 1;
     fulfilled: boolean = false;
     title = '1. The calm.';
     text = 'Place your first tile by clicking the tile in the center of the screen.';

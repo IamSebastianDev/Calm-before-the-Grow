@@ -7,6 +7,7 @@ import { Quest, QuestProgress } from '../quest';
 import { DolmenQuest } from './dolmen.quest';
 
 export class RiverQuest extends Quest {
+    key = 5;
     fulfilled: boolean = false;
     title = '5. A place to cool down';
     text = 'A small pond or river is a great place to cool your feet or have a sip of water to drink.';

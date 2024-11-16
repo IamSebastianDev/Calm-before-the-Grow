@@ -7,6 +7,7 @@ import { Quest, QuestProgress } from '../quest';
 import { RiverQuest } from './river.quest';
 
 export class GrowthQuest extends Quest {
+    key = 4;
     fulfilled: boolean = false;
     title = '4. Everything should grow';
     text = 'Grow your garden by combining tiles to gain new tiles.';

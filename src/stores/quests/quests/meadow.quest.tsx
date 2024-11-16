@@ -7,6 +7,7 @@ import { Quest, QuestProgress } from '../quest';
 import { FlowerQuest } from './flower.quest';
 
 export class MeadowQuest extends Quest {
+    key = 2;
     fulfilled: boolean = false;
     title = '2. A Meadow';
     text = (

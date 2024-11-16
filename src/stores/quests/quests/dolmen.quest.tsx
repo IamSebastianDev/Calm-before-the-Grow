@@ -6,6 +6,7 @@ import { Quest, QuestProgress } from '../quest';
 import { SwampQuest } from './swamp.quest';
 
 export class DolmenQuest extends Quest {
+    key = 6;
     fulfilled: boolean = false;
     title = '6. A Place to rest';
     text = (
