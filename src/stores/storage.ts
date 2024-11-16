@@ -48,32 +48,26 @@ class GameStorage {
             // Serialize tiles by putting them into an object
             tiles: {
                 ...Object.fromEntries(
-                    useGridStore
-                        .getState()
-                        .tiles.entries()
-                        .map(([key, value]) => [
-                            key,
-                            {
-                                position: { x: value.position.x, y: value.position.y },
-                                type: value.type,
-                            },
-                        ]),
+                    [...useGridStore.getState().tiles.entries()].map(([key, value]) => [
+                        key,
+                        {
+                            position: { x: value.position.x, y: value.position.y },
+                            type: value.type,
+                        },
+                    ]),
                 ),
             },
             props: {
                 ...Object.fromEntries(
-                    usePropsStore
-                        .getState()
-                        .props.entries()
-                        .map(([key, value]) => [
-                            key,
-                            {
-                                position: { x: value.position.x, y: value.position.y },
-                                type: value.type,
-                                id: value.id,
-                                serialId: value.serialId,
-                            },
-                        ]),
+                    [...usePropsStore.getState().props.entries()].map(([key, value]) => [
+                        key,
+                        {
+                            position: { x: value.position.x, y: value.position.y },
+                            type: value.type,
+                            id: value.id,
+                            serialId: value.serialId,
+                        },
+                    ]),
                 ),
             },
             questIndex: useQuestStore.getState().current.key,

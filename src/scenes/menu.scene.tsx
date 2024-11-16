@@ -18,7 +18,6 @@ export const Menu: Scene = () => {
     };
 
     const handleResumeGameClick = () => {
-        console.log({ dis: gameStorage.hasStoredState });
         if (!gameStorage.hasStoredState) return;
         gameStorage.loadGameState();
         sceneManager.next('main');
