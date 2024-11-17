@@ -29,7 +29,7 @@ export const getQuestByKey = (key: number) => {
     ];
 
     return {
-        current: quests[key],
+        current: quests[key - 1],
         fulfilled: quests.slice(0, key - 1),
     };
 };

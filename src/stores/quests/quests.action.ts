@@ -13,6 +13,9 @@ export const checkForQuestProgress = () => {
 
 export const completeQuest = (quest: Quest) => {
     useQuestStore.setState((state) => {
-        return { current: quest.next(), fulfilled: [...state.fulfilled, quest] };
+        if (quest.next()) {
+            return { current: quest.next(), fulfilled: [...state.fulfilled, quest] };
+        }
+        return state;
     });
 };
